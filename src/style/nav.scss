@@ -1,0 +1,38 @@
+ul.nav-underlined {
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-left: 0;
+  margin-bottom: 0;
+
+  li {
+    display: inline-block;
+    float: none;
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+    }
+    a:hover, a:focus {
+      text-decoration: none;
+      border-bottom: 2px solid rgba(#fff, .25);
+    }
+    a.active {
+      border-bottom: 2px solid;
+    }
+    a.active:hover {
+      color: var(--primary);
+    }
+  }
+}
+
+ul.nav-underlined::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-link .icon {
+  color: var(--icons) !important;
+}
+
+.nav-link.active .icon, .nav-link.router-link-active .icon {
+  color: var(--primary) !important;
+}

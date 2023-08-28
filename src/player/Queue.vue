@@ -1,0 +1,104 @@
+<template>
+  <div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h1 class="mb-0">
+        Playing
+      </h1>
+      <div>
+        <b-button variant="link" class="mr-2" @click="shuffle">
+          <Icon icon="shuffle" /> Shuffle
+        </b-button>
+        <b-button variant="link" @click="clear">
+          <Icon icon="x" /> Clear
+        </b-button>
+      </div>
+    </div>
+    <BaseTable v-if="tracks.length > 0">
+      <BaseTableHead>
+        <th class="text-left d-none d-lg-table-cell">
+          Artist
+        </th>
+        <th class="text-left d-none d-md-table-cell">
+          Album
+        </th>
+        <th class="text-right d-none d-md-table-cell">
+          Duration
+        </th>
+      </BaseTableHead>
+      <tbody class="text-break">
+        <tr v-for="(item, index) in tracks" :key="index"
+            :class="{'active': index === queueIndex}"
+            :draggable="true" @dragstart="dragstart(item.id, $event)"
+            @click="play(index)">
+          <CellTrackNumber :active="index === queueIndex && isPlaying" :value="item.track" />
+          <CellTitle :track="item" />
+          <CellArtist :track="item" />
+          <CellAlbum :track="item" />
+          <CellDuration :track="item" />
+          <CellActions :track="item">
+            <b-dropdown-divider />
+            <ContextMenuItem icon="x" variant="danger" @click="remove(index)">
+              Remove
+            </ContextMenuItem>
+          </CellActions>
+        </tr>
+      </tbody>
+    </BaseTable>
+    <EmptyIndicator v-else />
+  </div>
+</template>
+<script lang="ts">
+  import { defineComponent } from 'vue'
+  import BaseTable from '@/shared/components/BaseTable.vue'
+  import BaseTableHead from '@/shared/components/BaseTableHead.vue'
+  import CellTrackNumber from '@/shared/components/track/CellTrackNumber.vue'
+  import CellDuration from '@/shared/components/track/CellDuration.vue'
+  import CellAlbum from '@/shared/components/track/CellAlbum.vue'
+  import CellArtist from '@/shared/components/track/CellArtist.vue'
+  import CellTitle from '@/shared/components/track/CellTitle.vue'
+  import CellActions from '@/shared/components/track/CellActions.vue'
+
+  export default defineComponent({
+    components: {
+      CellActions,
+      CellTitle,
+      CellArtist,
+      CellAlbum,
+      CellDuration,
+      CellTrackNumber,
+      BaseTableHead,
+      BaseTable,
+    },
+    computed: {
+      isPlaying() {
+        return this.$store.getters['player/isPlaying']
+      },
+      tracks() {
+        return this.$store.state.player.queue
+      },
+      queueIndex() {
+        return this.$store.state.player.queueIndex
+      },
+    },
+    methods: {
+      play(index: number) {
+        if (index === this.queueIndex) {
+          return this.$store.dispatch('player/playPause')
+        }
+        return this.$store.dispatch('player/playTrackListIndex', { index })
+      },
+      dragstart(id: string, event: any) {
+        event.dataTransfer.setData('application/x-track-id', id)
+      },
+      remove(idx: number) {
+        return this.$store.commit('player/removeFromQueue', idx)
+      },
+      clear() {
+        return this.$store.commit('player/clearQueue')
+      },
+      shuffle() {
+        return this.$store.commit('player/shuffleQueue')
+      }
+    }
+  })
+</script>

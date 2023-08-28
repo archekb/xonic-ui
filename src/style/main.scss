@@ -1,0 +1,146 @@
+@import "./variables";
+
+$primary: #09f;
+$danger: #ff4141;
+// $secondary: $theme-elevation-2;
+
+$link-color: var(--text-body);
+$link-hover-color: var(--text-muted);
+$text-muted: var(--text-muted);
+$border-color: var(--background-2);
+
+// $link-color: var(--text-muted);
+
+$body-bg:  var(--background-0);
+$body-color:  var(--text-body);
+$border-color: var(--background-2);
+$body-bg-se : var(--background-2);
+
+// Card
+$card-bg: var(--background-1);
+$card-cap-bg: var(--background-2);
+
+// Modal
+$modal-content-bg: var(--background-1);
+$modal-content-border-color: var(--background-2);
+
+// Dropdown
+$dropdown-bg: var(--background-1);
+$dropdown-link-color:  var(--text-body);
+$dropdown-link-hover-bg: var(--background-1);
+$dropdown-link-hover-color: var(--text-muted);
+$dropdown-border-color: var(--background-2);
+$dropdown-divider-bg: var(--background-2);
+
+// Popover
+$popover-bg: var(--background-1);
+$popover-header-bg: darken($theme-elevation-1, 3%) !default;
+// $popover-border-color: $theme-elevation-2;
+
+// Form
+$input-bg: var(--background-2);
+$input-border-color: var(--background-2);
+$input-color: var(--text-body);
+
+$input-focus-border-color: var(--primary);
+
+$component-active-color: var(--primary);
+$component-active-bg: var(--primary);
+
+
+$custom-control-indicator-active-color: var(--primary);
+$custom-control-indicator-active-bg: var(--primary);
+$custom-range-thumb-active-bg: var(--primary);
+$custom-control-indicator-active-box-shadow: var(--primary);
+
+
+$custom-range-track-height: 0.1rem;
+$custom-range-thumb-bg: var(--text-body);
+$custom-range-track-bg: var(--text-muted);
+
+// List group
+$list-group-bg: var(--background-1);
+// $list-group-hover-bg: rgba(#fff, .1);
+$list-group-color: var(--text-body);
+$list-group-action-hover-color: var(--text-body);
+$list-group-border-color: var(--background-1);
+// $list-group-action-active-bg: rgba(#fff, .1);
+
+:root {
+  --background-0: #{$theme-elevation-0};
+  --background-1: #{$theme-elevation-1};
+  --background-2: #{$theme-elevation-2};
+  --text-body: #{$theme-text};
+  --text-muted: #{$theme-text-muted};
+}
+
+.elevated {
+  background-color: var(--background-1);
+}
+
+.breadcrumb {
+  background: none !important;
+  padding: 0 !important;
+}
+
+a.active {
+  color: var(--primary);
+}
+
+h1, h2, h3, h4, h5 {
+  color: var(--text-body);
+}
+
+.btn-link:focus {
+  box-shadow: none !important;
+}
+
+@import './nav';
+@import './table';
+
+$enable-print-styles: false;
+$enable-responsive-font-sizes: true;
+
+@import '~bootstrap';
+@import '~bootstrap-vue';
+
+.modal-header .close {
+  color: var(--text-body);
+  opacity: 1;
+}
+
+/* Override bootstrap styles with var */
+.list-group-item-action:hover, .list-group-item-action:focus {
+  background-color: var(--background-2) !important;
+  border-color: transparent !important;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--text-btn) !important;
+}
+
+.btn-secondary {
+  background-color: var(--secondary) !important;
+  border-color: var(--secondary) !important;
+  color: var(--text-btn) !important;
+}
+
+.bg-secondary {
+  background-color: var(--background-2) !important;
+}
+
+
+/* Remove badge fade in */
+.badge {
+  transition: none !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  background-color: unset !important;
+}
