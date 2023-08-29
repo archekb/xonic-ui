@@ -18,15 +18,15 @@
             </b-button>
           </div>
         </div>
-        <OverflowMenu v-if="id != 'random'" class="ml-3">
-          <ContextMenuItem icon="edit" @click="showEditModal = true">
+        <OverflowMenu class="ml-3">
+          <ContextMenuItem icon="edit" @click="showEditModal = true" v-if="!isRandom">
             Edit
           </ContextMenuItem>
           <ContextMenuItem v-if="shareStore.supported" icon="share" @click="showShare = true">
             Share
           </ContextMenuItem>
           <b-dropdown-divider />
-          <ContextMenuItem icon="x" variant="danger" @click="deletePlaylist()">
+          <ContextMenuItem icon="x" variant="danger" @click="deletePlaylist()" v-if="!isRandom">
             Delete
           </ContextMenuItem>
         </OverflowMenu>
@@ -65,7 +65,7 @@
             <textarea v-model="item.comment" class="form-control" />
           </div>
           <div class="form-group">
-            <label class="mb-0">Public</label>
+            <label class="mb-0">Public (visible for other server users)</label>
             <b-form-checkbox v-model="item.isPublic" switch />
           </div>
         </template>
@@ -75,7 +75,7 @@
       <EmptyIndicator>
         Playlist can't be loaded, {{ error?.message }}
         <div class="d-flex flex-column align-items-center mt-4">
-          <b-button variant="secondary" class="text-danger" @click="deletePlaylist()">
+          <b-button variant="secondary" class="text-danger" @click="deletePlaylist()" v-if="!isRandom">
             <Icon icon="trash" /> Delete playlist
           </b-button>
         </div>
@@ -115,6 +115,9 @@
       }
     },
     computed: {
+      isRandom(): boolean {
+        return this.id === 'random'
+      },
       isPlaying(): boolean {
         return this.$store.getters['player/isPlaying']
       },

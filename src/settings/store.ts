@@ -42,6 +42,9 @@ const DefaultSettings = {
     theme: {},
     root: 'discover',
     return_to: '',
+  },
+  player: {
+    random_playlist_length: 200,
   }
 }
 

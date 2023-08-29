@@ -48,6 +48,22 @@
       </b-card-body>
     </b-card>
 
+    <b-card no-body>
+      <b-card-header @click="sectionToggle('player')">
+        Player
+        <Icon :icon="sectionIsShow('player') ? 'minus' : 'plus'" class="float-right" />
+      </b-card-header>
+      <b-card-body v-show="sectionIsShow('player')">
+        <b-row>
+          <b-col class="col-12 col-sm-6 col-xl-3 mb-3 mb-sm-0">
+            <h5>Random playlist length</h5>
+             <b-form-input type="number" number :min="1" :max="1000" :value="settings.get('player.random_playlist_length')" @change="v => settings.set('player.random_playlist_length', v > 1000 ? 1000 : v)" />
+          </b-col>
+
+        </b-row>
+      </b-card-body>
+    </b-card>
+
   </div>
 </template>
 
@@ -74,7 +90,8 @@
     data() {
       return {
         section: {
-          ui: true
+          ui: true,
+          player: true,
         } as any,
         enums,
         isEqual
@@ -89,6 +106,7 @@
       },
       save(path: string) {
         return (value: any) => {
+          console.log(value)
           this.settings.set(path, value)
         }
       }

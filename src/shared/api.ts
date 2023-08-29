@@ -2,6 +2,7 @@ import { AuthService } from '@/auth/service'
 import { map, max, orderBy, uniq } from 'lodash-es'
 import { toQueryString } from '@/shared/utils'
 import sanitizeHtml from 'sanitize-html'
+import { useSettingsStore } from '@/settings/store'
 
 export type AlbumSort =
   'a-z' |
@@ -328,7 +329,7 @@ export class API {
 
   async getRandomSongs(): Promise<Track[]> {
     const params = {
-      size: 200,
+      size: useSettingsStore().get('player.random_playlist_length') || 100,
     }
     const response = await this.fetch('rest/getRandomSongs', params)
     return (response.randomSongs?.song || []).map(this.normalizeTrack, this)
