@@ -1,4 +1,4 @@
-# Xonic UI (fork of [Airsonic-refix](https://github.com/tamland/airsonic-refix) )
+# Xonic UI (fork of [Airsonic-refix](https://github.com/tamland/airsonic-refix))
 
 Modern responsive web frontend for [airsonic-advanced](https://github.com/airsonic-advanced/airsonic-advanced), [navidrome](https://github.com/navidrome/navidrome),
 [gonic](https://github.com/sentriz/gonic) and other [subsonic](https://github.com/topics/subsonic) compatible music servers.

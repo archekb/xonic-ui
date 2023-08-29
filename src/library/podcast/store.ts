@@ -5,7 +5,7 @@ import { BIconCartCheck } from 'bootstrap-vue'
 
 export const usePodcastStore = defineStore('podcast', {
   state: () => ({
-    supported: null as null | boolean,
+    supported: true,
     podcasts: null as null | Podcast[],
 
     _downloadingQueue: [] as string[],
@@ -18,7 +18,6 @@ export const usePodcastStore = defineStore('podcast', {
       let podcasts = null as null | Podcast[]
       try {
         podcasts = await this.api.getPodcasts()
-        this.supported = true
       } catch (e) {
         this.supported = false
         return

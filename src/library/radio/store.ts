@@ -3,14 +3,13 @@ import { RadioStation } from '@/shared/api'
 
 export const useRadioStore = defineStore('radio', {
   state: () => ({
-    supported: null as null | boolean,
+    supported: true,
     stations: null as null | RadioStation[],
   }),
   actions: {
     async load() {
       try {
         this.stations = await this.api.getRadioStations()
-        this.supported = true
       } catch (e) {
         this.supported = false
       }

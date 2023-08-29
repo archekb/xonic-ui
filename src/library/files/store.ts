@@ -3,7 +3,7 @@ import { FileDirectory } from '@/shared/api'
 
 export const useFilesStore = defineStore('files', {
   state: () => ({
-    supported: null as null | boolean,
+    supported: true,
     files: null as null | FileDirectory,
 
     _library: null as null | FileDirectory,
@@ -15,7 +15,6 @@ export const useFilesStore = defineStore('files', {
       if (this._library === null) {
         try {
           this._library = await this.api.getFilesRoot()
-          this.supported = true
         } catch (e) {
           this.supported = false
           return

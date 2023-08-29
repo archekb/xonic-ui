@@ -3,7 +3,7 @@ import { Share } from '@/shared/api'
 
 export const useShareStore = defineStore('share', {
   state: () => ({
-    supported: null as null | boolean,
+    supported: true,
     shares: null as null | Share[],
     _loading: false,
   }),
@@ -13,7 +13,6 @@ export const useShareStore = defineStore('share', {
       try {
         this._loading = true
         this.shares = await this.api.getShares()
-        this.supported = true
       } catch (e) {
         this.supported = false
       } finally {

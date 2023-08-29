@@ -4,7 +4,7 @@
       <Icon icon="x" />
     </template>
     <template #modal-title>
-      Share
+      Share {{ tracks?.length ? `${tracks?.length} ${tracks?.length > 1 ? 'tracks' : 'track' }` : '' }}
     </template>
 
     <div v-if="type === 'new'">
