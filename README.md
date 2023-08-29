@@ -1,4 +1,6 @@
 # Xonic UI (fork of [Airsonic-refix](https://github.com/tamland/airsonic-refix))
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7a2fa170-5da5-4a79-a85b-337600f56682/deploy-status)](https://app.netlify.com/sites/xonic-ui/deploys)
+
 
 Modern responsive web frontend for [airsonic-advanced](https://github.com/airsonic-advanced/airsonic-advanced), [navidrome](https://github.com/navidrome/navidrome),
 [gonic](https://github.com/sentriz/gonic) and other [subsonic](https://github.com/topics/subsonic) compatible music servers.
