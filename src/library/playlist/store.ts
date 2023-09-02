@@ -12,8 +12,8 @@ export const usePlaylistStore = defineStore('playlist', {
         this.playlists = orderBy(result, 'createdAt')
       })
     },
-    create(name: string) {
-      return this.api.createPlaylist(name).then(result => {
+    create({ name, songId }: any) {
+      return this.api.createPlaylist(name, songId).then(result => {
         this.playlists = orderBy(result, 'createdAt')
       })
     },

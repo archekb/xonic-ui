@@ -5,7 +5,7 @@
       <button type="button" class="btn btn-link btn-sm p-0 float-right" @click="showAddModal = true">
         <Icon icon="plus" />
       </button>
-      <CreatePlaylistModal :visible.sync="showAddModal" />
+      <PlaylistModal :visible.sync="showAddModal" new />
     </small>
 
     <router-link class="nav-link" :to="{name: 'playlist', params: { id: 'random' }}">
@@ -27,12 +27,12 @@
 </template>
 <script lang="ts">
   import { computed, defineComponent } from 'vue'
-  import CreatePlaylistModal from '@/library/playlist/CreatePlaylistModal.vue'
+  import PlaylistModal from '@/library/playlist/PlaylistModal.vue'
   import { usePlaylistStore } from '@/library/playlist/store'
 
   export default defineComponent({
     components: {
-      CreatePlaylistModal
+      PlaylistModal
     },
     setup() {
       const store = usePlaylistStore()

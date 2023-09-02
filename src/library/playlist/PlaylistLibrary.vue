@@ -40,18 +40,18 @@
       </Tile>
     </Tiles>
     <EmptyIndicator v-else />
-    <CreatePlaylistModal :visible.sync="showAddModal" />
+    <PlaylistModal :visible.sync="showAddModal" new />
   </div>
 </template>
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue'
-  import CreatePlaylistModal from '@/library/playlist/CreatePlaylistModal.vue'
+  import PlaylistModal from './PlaylistModal.vue'
   import { orderBy } from 'lodash-es'
   import { usePlaylistStore } from '@/library/playlist/store'
 
   export default defineComponent({
     components: {
-      CreatePlaylistModal,
+      PlaylistModal,
     },
     props: {
       sort: { type: String, default: null },

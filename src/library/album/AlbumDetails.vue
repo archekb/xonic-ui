@@ -7,6 +7,7 @@
           <Icon :icon="isFavourite ? 'heart-fill' : 'heart'" />
         </b-button>
       </h1>
+
       <p>
         by
         <router-link :to="{name: 'artist', params: { id: album.artistId }}">
@@ -19,6 +20,7 @@
           </router-link>
         </span>
       </p>
+
       <div class="text-nowrap">
         <b-button variant="secondary" class="mr-2" @click="playNow">
           <Icon icon="play" /> Play
@@ -33,6 +35,9 @@
           <ContextMenuItem icon="plus" @click="addToQueue">
             Add to queue
           </ContextMenuItem>
+          <ContextMenuItem icon="plus" @click="showPlaylist = true">
+            Add to playlist
+          </ContextMenuItem>
           <ContextMenuItem v-if="shareStore.supported" icon="share" @click="showShare = true">
             Share
           </ContextMenuItem>
@@ -42,28 +47,32 @@
         </OverflowMenu>
       </div>
     </Hero>
+
     <div class="row">
       <div class="col">
         <TrackList :tracks="album.tracks" no-album />
       </div>
     </div>
+    <PlaylistModal :visible.sync="showPlaylist" :tracks="album.tracks" />
     <ShareModal :visible.sync="showShare" :tracks="album.tracks" />
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import TrackList from '@/shared/components/track/TrackList.vue'
-  import { Album } from '@/shared/api'
+  import { useMainStore } from '@/shared/store'
   import { useFavouriteStore } from '@/library/favourite/store'
   import { useShareStore } from '@/library/share/store'
+  import { Album } from '@/shared/api'
   import ShareModal from '@/library/share/ShareModal.vue'
-  import { useMainStore } from '@/shared/store'
+  import TrackList from '@/shared/components/track/TrackList.vue'
+  import PlaylistModal from '@/library/playlist/PlaylistModal.vue'
 
   export default defineComponent({
     components: {
       TrackList,
-      ShareModal
+      ShareModal,
+      PlaylistModal,
     },
     props: {
       id: { type: String, required: true }
@@ -79,6 +88,7 @@
       return {
         album: null as null | Album,
         showShare: false,
+        showPlaylist: false,
       }
     },
     computed: {

@@ -293,8 +293,8 @@ export class API {
     }
   }
 
-  async createPlaylist(name: string) {
-    await this.fetch('rest/createPlaylist', { name })
+  async createPlaylist(name: string, songId: undefined | string | string[]) {
+    await this.fetch('rest/createPlaylist', { name, songId })
     return this.getPlaylists()
   }
 

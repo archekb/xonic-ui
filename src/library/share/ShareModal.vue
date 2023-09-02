@@ -67,7 +67,7 @@
     </div>
 
     <template #modal-footer>
-      <b-button  type="button" variant="primary" @click="save()">
+      <b-button type="button" variant="primary" @click="save()">
         Create
       </b-button>
     </template>
