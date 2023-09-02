@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import jp from 'jsonpath'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, merge } from 'lodash-es'
 import { config } from '@/shared/config'
 
 export interface Theme {
@@ -48,17 +48,33 @@ const DefaultSettings = {
   }
 }
 
+function Defaults() {
+  const settings = cloneDeep(DefaultSettings)
+
+  try {
+    const envSettings = JSON.parse(config.settingsEnv || 'null')
+    if (envSettings) {
+      merge(settings, envSettings)
+    }
+  } catch (e) {
+    console.log("Can't parse settings from env", e)
+  }
+
+  return settings
+}
+
 export const useSettingsStore = defineStore('settings', {
   state: () => {
-    let settings = cloneDeep(DefaultSettings)
+    const settings = Defaults()
 
     try {
-      settings = { ...settings, ...JSON.parse(config.settingsEnv || 'null') }
-    } catch (e) {}
-
-    try {
-      settings = { ...settings, ...JSON.parse(window.localStorage.getItem('client_settings') || 'null') }
-    } catch (e) {}
+      const localSettings = JSON.parse(window.localStorage.getItem('client_settings') || 'null')
+      if (localSettings) {
+        merge(settings, localSettings)
+      }
+    } catch (e) {
+      window.localStorage.setItem('client_settings', JSON.stringify(settings))
+    }
 
     return { settings }
   },
@@ -77,7 +93,7 @@ export const useSettingsStore = defineStore('settings', {
       return Array.isArray(pv) ? pv.includes(value) : false
     },
     reset() {
-      this.settings = cloneDeep(DefaultSettings)
+      this.settings = Defaults()
       window.localStorage.setItem('client_settings', JSON.stringify(this.settings))
     }
   }

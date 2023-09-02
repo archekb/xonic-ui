@@ -36,6 +36,9 @@
           <ContextMenuItem v-if="shareStore.supported" icon="share" @click="showShare = true">
             Share
           </ContextMenuItem>
+          <ContextMenuItem v-if="true" icon="download" @click="mainStore.downloadAll(album.name, album.tracks)">
+            Download all
+          </ContextMenuItem>
         </OverflowMenu>
       </div>
     </Hero>
@@ -55,6 +58,7 @@
   import { useFavouriteStore } from '@/library/favourite/store'
   import { useShareStore } from '@/library/share/store'
   import ShareModal from '@/library/share/ShareModal.vue'
+  import { useMainStore } from '@/shared/store'
 
   export default defineComponent({
     components: {
@@ -68,6 +72,7 @@
       return {
         favouriteStore: useFavouriteStore(),
         shareStore: useShareStore(),
+        mainStore: useMainStore()
       }
     },
     data() {

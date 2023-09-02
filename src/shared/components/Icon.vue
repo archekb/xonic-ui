@@ -56,6 +56,7 @@
   import iconShare from '@iconify-icons/bi/share'
   import iconShieldCheck from '@iconify-icons/bi/shield-fill-check'
   import iconNewWindow from '@iconify-icons/bi/window-plus'
+  import iconSave from '@iconify-icons/bi/save'
 
   const icons = {
     'arrow-up-down': iconArrowUpDown.body,
@@ -97,6 +98,7 @@
     share: iconShare.body,
     'shield-check': iconShieldCheck.body,
     'new-window': iconNewWindow.body,
+    save: iconSave.body,
   } as {[key: string]: string}
 
   export default defineComponent({

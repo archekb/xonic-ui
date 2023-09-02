@@ -27,6 +27,7 @@ export interface Track {
   isPodcast?: boolean
   isUnavailable?: boolean
   playCount? : number
+  fileName?: string
 }
 
 export interface Album {
@@ -529,6 +530,7 @@ export class API {
   }
 
   private normalizeTrack(item: any): Track {
+    const path = item?.path?.split('/')
     return {
       id: item.id,
       title: item.title,
@@ -541,6 +543,7 @@ export class API {
       artistId: item.artistId,
       url: this.getStreamUrl(item.id),
       image: this.getCoverArtUrl(item),
+      ...(path.length > 0 ? { fileName: path.pop() } : {}),
     }
   }
 

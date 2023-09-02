@@ -2,7 +2,7 @@ import IcecastMetadataStats from 'icecast-metadata-stats'
 
 export class AudioController {
   private audio = new Audio()
-  private handle = -1
+  private handle = -1 as number | NodeJS.Timeout
   private volume = 1.0
   private fadeDuration = 200
   private buffer = new Audio()

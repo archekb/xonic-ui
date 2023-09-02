@@ -1,6 +1,6 @@
 {
   "name": "xonic-ui",
-  "version": "0.5.1",
+  "version": "0.5.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -9,14 +9,18 @@
   },
   "dependencies": {
     "@iconify-icons/bi": "^1.2.2",
-    "@types/sanitize-html": "^2.9.0",
+    "@types/file-saver": "^2.0.5",
     "@types/jsonpath": "^0.2.0",
+    "@types/sanitize-html": "^2.9.0",
     "@types/vue-color": "^2.4.4",
     "@vueuse/core": "^10.2.1",
+    "axios": "^1.5.0",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.23.1",
+    "file-saver": "^2.0.5",
     "icecast-metadata-stats": "^0.1.1",
     "jsonpath": "^1.1.1",
+    "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
     "md5-es": "^1.8.2",
     "pinia": "^2.0.28",

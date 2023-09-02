@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { Podcast } from '@/shared/api'
 import { orderBy } from 'lodash-es'
-import { BIconCartCheck } from 'bootstrap-vue'
 
 export const usePodcastStore = defineStore('podcast', {
   state: () => ({
@@ -9,7 +8,7 @@ export const usePodcastStore = defineStore('podcast', {
     podcasts: null as null | Podcast[],
 
     _downloadingQueue: [] as string[],
-    _timer: null as null | number,
+    _timer: null as null | number | NodeJS.Timer,
   }),
   actions: {
     async load(force = false) {

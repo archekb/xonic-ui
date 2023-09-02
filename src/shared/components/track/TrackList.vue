@@ -1,5 +1,6 @@
 <template>
   <BaseTable>
+
     <BaseTableHead>
       <th v-if="!noArtist" class="text-left d-none d-lg-table-cell">
         Artist
@@ -14,6 +15,7 @@
         Home Page
       </th>
     </BaseTableHead>
+
     <tbody class="text-break">
       <tr v-for="(item, index) in tracks" :key="index"
           :class="{'active': item.id === playingTrackId}"
@@ -33,6 +35,7 @@
         </CellActions>
       </tr>
     </tbody>
+
   </BaseTable>
 </template>
 <script lang="ts">
