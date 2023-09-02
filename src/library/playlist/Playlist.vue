@@ -22,6 +22,9 @@
         </div>
 
         <OverflowMenu class="ml-3">
+          <ContextMenuItem icon="save" @click="showPlaylist = true" v-if="isRandom">
+            Add to playlist
+          </ContextMenuItem>
           <ContextMenuItem icon="edit" @click="showEditModal = true" v-if="!isRandom">
             Edit
           </ContextMenuItem>
@@ -32,7 +35,7 @@
             Download all
           </ContextMenuItem>
           <b-dropdown-divider v-if="!isRandom" />
-          <ContextMenuItem icon="x" variant="danger" @click="deletePlaylist()" v-if="!isRandom">
+          <ContextMenuItem icon="trash" variant="danger" @click="deletePlaylist()" v-if="!isRandom">
             Delete
           </ContextMenuItem>
         </OverflowMenu>
@@ -54,7 +57,7 @@
       <TrackList v-if="playlist.tracks.length > 0" :tracks="playlist.tracks">
         <template #context-menu="{index}">
           <b-dropdown-divider />
-          <ContextMenuItem icon="x" variant="danger" @click="removeTrack(index)">
+          <ContextMenuItem icon="trash" variant="danger" @click="removeTrack(index)">
             Remove
           </ContextMenuItem>
         </template>
@@ -88,12 +91,13 @@
         Playlist can't be loaded, {{ error?.message }}
         <div class="d-flex flex-column align-items-center mt-4">
           <b-button variant="secondary" class="text-danger" @click="deletePlaylist()" v-if="!isRandom">
-            <Icon icon="trash" /> Delete playlist
+            <Icon icon="trash" /> Try delete playlist
           </b-button>
         </div>
       </EmptyIndicator>
     </div>
 
+    <PlaylistModal :visible.sync="showPlaylist" :tracks="playlist.tracks" />
     <ShareModal :visible.sync="showShare" :tracks="playableTracks" />
   </div>
 </template>
@@ -106,12 +110,14 @@
   import ShareModal from '@/library/share/ShareModal.vue'
   import { Track } from '@/shared/api'
   import { useMainStore } from '@/shared/store'
+  import PlaylistModal from '@/library/playlist/PlaylistModal.vue'
 
   export default defineComponent({
     components: {
       TrackList,
       EditModal,
-      ShareModal
+      ShareModal,
+      PlaylistModal,
     },
     props: {
       id: { type: String, required: true }
@@ -125,6 +131,7 @@
         showEditModal: false,
         error: null as any,
         showShare: false,
+        showPlaylist: false,
       }
     },
     computed: {

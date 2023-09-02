@@ -53,6 +53,7 @@
         <TrackList :tracks="album.tracks" no-album />
       </div>
     </div>
+
     <PlaylistModal :visible.sync="showPlaylist" :tracks="album.tracks" />
     <ShareModal :visible.sync="showShare" :tracks="album.tracks" />
   </div>
