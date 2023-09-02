@@ -1,5 +1,18 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
+import { randomString } from './utils'
+
+export interface Notification {
+  id?: string
+  type?: string
+  title?: string
+  notAutoHide?: boolean
+  message: string
+  action?: {
+    title: string,
+    click: () => void,
+  }
+}
 
 export const useMainStore = defineStore('main', {
   state: () => ({
@@ -7,15 +20,20 @@ export const useMainStore = defineStore('main', {
     username: null as null | string,
     server: null as null | string,
     error: null as null | Error,
+    notifications: [] as Notification[],
     menuVisible: false,
-    artistAlbumSortOrder: useLocalStorage<'desc' | 'asc'>('settings.artistAlbumSortOrder', 'desc')
+    artistAlbumSortOrder: useLocalStorage<'desc' | 'asc'>('settings.artistAlbumSortOrder', 'desc'),
   }),
   actions: {
     setError(error: Error) {
-      this.error = error
+      this.addNotification({ message: `${error.message} ${error.stack}`, title: error.name, notAutoHide: true, type: 'danger' })
     },
-    clearError() {
-      this.error = null
+    addNotification(n: Notification) {
+      if (!n.id) n.id = randomString()
+      this.notifications = [...this.notifications.filter(v => v.id !== n.id), n]
+    },
+    removeNotification(id: string) {
+      this.notifications = this.notifications.filter(v => v.id !== id)
     },
     setLoginSuccess(username: string, server: string) {
       this.isLoggedIn = true
@@ -30,6 +48,6 @@ export const useMainStore = defineStore('main', {
     },
     toggleArtistAlbumSortOrder() {
       this.artistAlbumSortOrder = this.artistAlbumSortOrder === 'asc' ? 'desc' : 'asc'
-    }
+    },
   },
 })

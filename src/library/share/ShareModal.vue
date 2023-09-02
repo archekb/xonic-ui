@@ -52,9 +52,6 @@
         <dt class="col-sm-3">URL</dt>
         <dd class="col-sm-9"><a :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.url }}</a></dd>
       </dl>
-      <div v-if="copiedToClipboard !== null" class="text-center mb-3">
-        <Icon :icon="copiedToClipboard ? 'check' : 'x'" /> {{copiedToClipboard ? 'Successfully copied to clipboard' : 'Failed copy to clipboard'}}
-      </div>
       <b-button type="button" class="list-group-item list-group-item-action text-truncate text-center" @click="copyToClipboard(item.url)">
         Copy URL
       </b-button>
@@ -83,6 +80,7 @@
   import { useShareStore } from '@/library/share/store'
   import { Share, Track } from '@/shared/api'
   import { BFormDatepicker } from 'bootstrap-vue'
+  import { useMainStore } from '@/shared/store'
 
   export default defineComponent({
     components: {
@@ -96,7 +94,6 @@
       return {
         type: 'select',
         item: {} as Share,
-        copiedToClipboard: null as null | boolean,
       }
     },
     setup() {
@@ -129,9 +126,9 @@
       async copyToClipboard(url: string) {
         try {
           await navigator.clipboard.writeText(url)
-          this.copiedToClipboard = true
+          useMainStore().addNotification({ message: 'Successfully link copied to clipboard', title: 'Share' })
         } catch (e) {
-          this.copiedToClipboard = false
+          useMainStore().addNotification({ message: 'Failed link copy to clipboard', title: 'Share', type: 'danger' })
         }
       }
     }

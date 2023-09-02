@@ -135,6 +135,14 @@ $enable-responsive-font-sizes: true;
   background-color: var(--background-2) !important;
 }
 
+.b-toast .toast {
+  color: var(--text-body);
+  background-color: var(--background-1);
+}
+
+.b-toast .toast-header {
+  background-color: var(--background-2);
+}
 
 /* Remove badge fade in */
 .badge {

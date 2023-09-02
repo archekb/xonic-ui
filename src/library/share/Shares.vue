@@ -70,6 +70,7 @@
       </template>
     </EditModal>
   </ContentLoader>
+
   <EmptyIndicator v-else label="Shares are not supported" />
 </template>
 <script lang="ts">
@@ -82,6 +83,7 @@
   import CellMenu from '@/shared/components/CellMenu.vue'
   import { Share } from '@/shared/api'
   import { BFormDatepicker } from 'bootstrap-vue'
+  import { useMainStore } from '@/shared/store'
 
   export default defineComponent({
     components: {
@@ -120,7 +122,12 @@
         await this.storeShare.delete(item.id)
       },
       async copyToClipboard(url: string) {
-        await navigator.clipboard.writeText(url)
+        try {
+          await navigator.clipboard.writeText(url)
+          useMainStore().addNotification({ message: 'Successfully link copied to clipboard', title: 'Share' })
+        } catch (e) {
+          useMainStore().addNotification({ message: 'Failed link copy to clipboard', title: 'Share', type: 'danger' })
+        }
       },
       async open(url: string) {
         window?.open(url, '_blank')?.focus()

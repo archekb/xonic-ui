@@ -3,12 +3,12 @@
     <component :is="layout">
       <router-view />
     </component>
-    <ErrorToast />
+    <Toast />
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import ErrorToast from './ErrorToast.vue'
+  import Toast from './Toast.vue'
   import Default from '@/app/layout/Default.vue'
   import Fullscreen from '@/app/layout/Fullscreen.vue'
   import { useSettingsStore, Theme } from '@/settings/store'
@@ -16,7 +16,7 @@
 
   export default defineComponent({
     components: {
-      ErrorToast,
+      Toast,
       Default,
       Fullscreen,
     },

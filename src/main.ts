@@ -54,10 +54,10 @@ watch(
     }
   })
 
-router.beforeEach((to, from, next) => {
-  mainStore.clearError()
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   mainStore.clearError()
+//   next()
+// })
 
 const app = createApp(AppComponent, { router, pinia, store: playerStore })
 
