@@ -1,8 +1,5 @@
 <template functional>
-  <a :href="props.href"
-     target="_blank"
-     rel="noopener noreferrer"
-     :class="[data.class, data.staticClass]">
+  <a :href="props.href" target="_blank" rel="noopener noreferrer" :class="[data.class, data.staticClass]" @click.stop>
     <slot />
   </a>
 </template>

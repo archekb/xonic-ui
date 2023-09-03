@@ -20,6 +20,7 @@ Modern responsive web frontend for [airsonic-advanced](https://github.com/airson
 - Shares
 - Themes
 - Client Settings
+- Collection Downloads
 
 ## [Live demo](https://xonic-ui.netlify.com) 
 

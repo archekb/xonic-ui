@@ -67,7 +67,6 @@ export interface SearchResult {
 export interface RadioStation {
   id: string
   title: string
-  description: string
   url: string
   homepageUrl: string
 }
@@ -518,11 +517,10 @@ export class API {
     return {
       id: `radio-${item.id}`,
       title: item.name,
-      description: item.homePageUrl,
       album: item.name,
       track: item.track,
       url: item.streamUrl,
-      homepageUrl: item.homepageUrl,
+      homepageUrl: item.homepageUrl || item.homePageUrl,
       duration: 0,
       favourite: false,
       isStream: true,
