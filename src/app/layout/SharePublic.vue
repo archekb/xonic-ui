@@ -1,26 +1,20 @@
 <template>
   <div>
     <div class="min-vh-100 d-flex">
-      <Sidebar />
-      <main class="d-flex flex-column container-fluid py-2">
-        <TopNav />
+      <main class="container-fluid py-2">
         <slot />
       </main>
     </div>
-    <Player />
+    <Player share />
   </div>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import TopNav from '@/app/TopNav.vue'
-  import Sidebar from '@/app/Sidebar.vue'
   import Player from '@/player/Player.vue'
 
   export default defineComponent({
     components: {
-      TopNav,
-      Sidebar,
       Player,
     },
   })

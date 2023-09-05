@@ -103,18 +103,6 @@ export interface Playlist {
 
 export interface File extends Track {
   name: string
-
-  // id: string
-  // title: string
-  // isVideo: boolean
-  // parent: string
-  // path: string
-  // suffix: string,
-  // type: string,
-
-  // duration: number
-  // album?: string
-  // artist?: string
 }
 
 export interface FileDirectory {
@@ -187,6 +175,10 @@ export class API {
           throw new Error(message)
         })
     }
+  }
+
+  setAuthToShare(server: string, urlParams: any) {
+    this.auth = { server, urlParams } as AuthService
   }
 
   async getGenres() {
@@ -484,6 +476,16 @@ export class API {
     return this.normalizeShare(response?.share)
   }
 
+  async getSharePublic(id: string, secret?: string): Promise<Share> {
+    const response = await this.fetch('rest/getSharePublic', { id, secret })
+    return this.normalizeShare(response?.share)
+  }
+
+  // async getArtstreamSharePublic(srv: string, id: string, secret?: string): Promise<Share> {
+  //   const response = await this.fetchPublic(srv, 'rest/getSharePublic', { id, secret })
+  //   return this.normalizeShare(response?.share)
+  // }
+
   async addShare({ id, description, expires, secret, download }: any): Promise<Share> {
     const response = await this.fetch('rest/createShare', { id, description, expires, secret, download })
     const shares = (response?.shares?.share || []).map(this.normalizeShare, this)
@@ -541,7 +543,7 @@ export class API {
       artistId: item.artistId,
       url: this.getStreamUrl(item.id),
       image: this.getCoverArtUrl(item),
-      ...(path.length > 0 ? { fileName: path.pop() } : {}),
+      ...(path && path.length > 0 ? { fileName: path.pop() } : {}),
     }
   }
 

@@ -22,6 +22,8 @@ import ArtistTracks from '@/library/artist/ArtistTracks.vue'
 import { useSettingsStore } from '@/settings/store'
 import Shares from '@/library/share/Shares.vue'
 import Share from '@/library/share/Share.vue'
+import SharePublicLayout from '@/app/layout/SharePublic.vue'
+import SharePublic from '@/library/share/SharePublic.vue'
 
 export function setupRouter(auth: AuthService) {
   const router = new Router({
@@ -154,6 +156,12 @@ export function setupRouter(auth: AuthService) {
         component: Shares,
       },
       {
+        name: 'share',
+        path: '/shares/:id',
+        component: Share,
+        props: true,
+      },
+      {
         name: 'search',
         path: '/search',
         component: SearchResult,
@@ -168,16 +176,23 @@ export function setupRouter(auth: AuthService) {
         props: true,
       },
       {
-        name: 'share',
-        path: '/s*',
-        component: Shares,
+        name: 'sharePublic',
+        path: '/s/:id*',
+        component: SharePublic,
+        props: (route) => ({
+          srv: route.query.srv,
+          id: route.params?.id
+        }),
+        meta: {
+          layout: SharePublicLayout
+        }
       },
     ]
   })
 
   router.beforeEach((to, from, next) => {
-    if (to.name === 'share') next()
-    if (to.name !== 'login' && !auth.isAuthenticated()) {
+    if (to.name === 'sharePublic') next()
+    else if (to.name !== 'login' && !auth.isAuthenticated()) {
       next({ name: 'login', query: { returnTo: to.fullPath } })
     } else {
       next()

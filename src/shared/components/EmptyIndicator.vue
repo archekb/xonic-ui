@@ -1,5 +1,5 @@
 <template functional>
-  <div class="d-flex flex-column align-items-center justify-content-center" :style="{ height: '90%' }">
+  <div class="d-flex flex-column align-items-center justify-content-center h-100">
     <Icon icon="stack" class="empty-icon" />
     <div class="mt-4 text-muted">
       <slot>

@@ -4,7 +4,7 @@
       <Icon icon="x" />
     </template>
     <template v-if="tracks?.length" #modal-title>
-      Add to Playlist {{ tracks?.length ? `${tracks?.length} ${tracks?.length > 1 ? 'tracks' : 'track' }` : '' }}
+      Add to playlist {{ tracks?.length ? `${tracks?.length} ${tracks?.length > 1 ? 'tracks' : 'track' }` : '' }}
     </template>
     <template v-else #modal-title>
       Create Playlist

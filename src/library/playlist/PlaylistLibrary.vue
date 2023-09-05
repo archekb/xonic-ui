@@ -43,6 +43,7 @@
     <PlaylistModal :visible.sync="showAddModal" new />
   </div>
 </template>
+
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue'
   import PlaylistModal from './PlaylistModal.vue'

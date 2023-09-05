@@ -15,7 +15,7 @@
         <td><Icon icon="shield-check"/></td>
       </BaseTableHead>
       <tbody>
-        <tr v-for="(item, index) in shares" :key="item.id">
+        <tr v-for="(item, index) in shares" :key="item.id" @click="$router.push({name: 'share', params: { id: item.id } })">
           <td>{{ index + 1 }}</td>
           <td>
             {{ item.description }}

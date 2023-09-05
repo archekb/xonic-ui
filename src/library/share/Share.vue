@@ -1,66 +1,92 @@
 <template>
-  <ContentLoader v-slot :loading="playlist == null">
+  <ContentLoader v-slot v-if="supported" :loading="share == null">
     <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
-        {{ playlist.name }}
+        {{ share.description }}
       </h1>
-      <span v-if="playlist.isPublic" class="badge badge-light badge-pill mr-2">
-        Public
-      </span>
-      <OverflowMenu class="ml-auto">
-        <ContextMenuItem icon="edit" @click="showEditModal = true">
+
+      <span class="align-self-start">{{ share.tracks?.length ? `${share.tracks?.length} ${share.tracks?.length > 1 ? 'tracks' : 'track' }` : '' }}</span>
+
+      <div class="ml-auto">
+        <div class="d-none d-sm-block">
+          <b-button variant="secondary" :disabled="share.tracks.length === 0" class="mr-2" @click="playNow">
+            <Icon icon="play" /> Play
+          </b-button>
+          <b-button variant="secondary" :disabled="share.tracks.length === 0" @click="shuffleNow">
+            <Icon icon="shuffle" /> Shuffle
+          </b-button>
+        </div>
+      </div>
+
+      <OverflowMenu class="ml-3">
+        <!-- <ContextMenuItem icon="edit" @click="showEditModal = true">
           Edit
+        </ContextMenuItem> -->
+        <ContextMenuItem v-if="true" icon="download" @click="mainStore.downloadAll(share.name, share.tracks)">
+          Download all
         </ContextMenuItem>
         <b-dropdown-divider />
-        <ContextMenuItem icon="x" variant="danger" @click="deletePlaylist()">
+        <ContextMenuItem icon="trash" variant="danger" @click="deleteShare()">
           Delete
         </ContextMenuItem>
       </OverflowMenu>
     </div>
-    <p v-if="playlist.comment" class="text-muted">
-      {{ playlist.comment }}
-    </p>
-    <b-button variant="secondary" :disabled="playlist.tracks.length === 0" class="mr-2" @click="playNow">
-      <Icon icon="play" /> Play
-    </b-button>
-    <b-button variant="secondary" :disabled="playlist.tracks.length === 0" @click="shuffleNow">
-      <Icon icon="shuffle" /> Shuffle
-    </b-button>
-    <TrackList v-if="playlist.tracks.length > 0" :tracks="playlist.tracks">
+
+    <div class="d-block d-sm-none my-2">
+      <b-button variant="secondary" :disabled="share.tracks.length === 0" class="mr-2" @click="playNow">
+        <Icon icon="play" /> Play
+      </b-button>
+      <b-button variant="secondary" :disabled="share.tracks.length === 0" @click="shuffleNow">
+        <Icon icon="shuffle" /> Shuffle
+      </b-button>
+    </div>
+
+    <TrackList v-if="share.tracks.length > 0" :tracks="share.tracks">
       <template #context-menu="{index}">
         <b-dropdown-divider />
-        <ContextMenuItem icon="x" variant="danger" @click="removeTrack(index)">
+        <ContextMenuItem icon="trash" variant="danger" @click="removeTrack(index)">
           Remove
         </ContextMenuItem>
       </template>
     </TrackList>
+
     <EmptyIndicator v-else />
-    <EditModal :visible.sync="showEditModal" :item="playlist" @confirm="updatePlaylist">
+
+    <!-- <EditModal :visible.sync="showEditModal" :item="share" @confirm="updateShare">
       <template #title>
-        Edit playlist
+        Edit Share
       </template>
       <template #default="{ item }">
         <div class="form-group">
-          <label>Name</label>
-          <input v-model="item.name" class="form-control" type="text">
+          <label>Description (title)</label>
+          <input v-model="item.description" class="form-control" type="text">
         </div>
         <div class="form-group">
-          <label>Comment</label>
-          <textarea v-model="item.comment" class="form-control" />
+          <label>Expiration</label>
+          <b-form-datepicker v-model="item.expires" class="mb-2" :min="new Date(new Date().setDate(new Date().getDate() + 1))" value-as-date />
         </div>
         <div class="form-group">
-          <label class="mb-0">Public</label>
-          <b-form-checkbox v-model="item.isPublic" switch />
+          <label>Protect by secret phrase</label>
+          <input v-model="item.secret" class="form-control" type="text">
+        </div>
+        <div class="form-group">
+          <label class="mb-0">Download allowed</label>
+          <b-form-checkbox v-model="item.download" switch />
         </div>
       </template>
-    </EditModal>
+    </EditModal> -->
   </ContentLoader>
+  <EmptyIndicator v-else label="Shares are not supported" />
 </template>
+
 <script lang="ts">
   import { defineComponent } from 'vue'
+  import { storeToRefs } from 'pinia'
   import TrackList from '@/shared/components/track/TrackList.vue'
   import EditModal from '@/shared/components/EditModal.vue'
-  import { usePlaylistStore } from '@/library/playlist/store'
+  import { useShareStore } from '@/library/share/store'
+  import { Track } from '@/shared/api'
+  import { useMainStore } from '@/shared/store'
 
   export default defineComponent({
     components: {
@@ -71,37 +97,56 @@
       id: { type: String, required: true }
     },
     setup() {
-      return { playlistStore: usePlaylistStore() }
+      const shareStore = useShareStore()
+      const { supported } = storeToRefs(shareStore)
+      return {
+        supported,
+        shareStore,
+        mainStore: useMainStore(),
+      }
     },
     data() {
       return {
-        playlist: null as any,
+        share: null as any,
         showEditModal: false,
+      }
+    },
+    computed: {
+      isRandom(): boolean {
+        return this.id === 'random'
+      },
+      isPlaying(): boolean {
+        return this.$store.getters['player/isPlaying']
+      },
+      playableTracks(): Track[] {
+        return (this.share?.tracks || [])
       }
     },
     watch: {
       id: {
         immediate: true,
-        handler(value: string) {
-          this.playlist = null
-          this.$api.getPlaylist(value).then(playlist => {
-            this.playlist = playlist
-          })
+        async handler(value: string) {
+          this.share = await this.shareStore.get(value)
         }
       }
     },
     methods: {
-      removeTrack(index: number) {
-        this.playlist.tracks.splice(index, 1)
-        return this.playlistStore.removeTrack(this.id, index)
+      async playNow() {
+        return this.$store.dispatch('player/playNow', {
+          tracks: this.playableTracks,
+        })
       },
-      updatePlaylist(value: any) {
-        this.playlist = value
-        return this.playlistStore.update(this.playlist)
+      async shuffleNow() {
+        return this.$store.dispatch('player/shuffleNow', {
+          tracks: this.playableTracks,
+        })
       },
-      deletePlaylist() {
-        return this.playlistStore.delete(this.id).then(() => {
-          this.$router.replace({ name: 'playlists' })
+      async removeTrack(id: string) {
+        await this.shareStore.removeTrack(this.id, id)
+      },
+      deleteShare() {
+        return this.shareStore.delete(this.id).then(() => {
+          this.$router.replace({ name: 'shares' })
         })
       },
     }

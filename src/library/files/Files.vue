@@ -1,10 +1,12 @@
 <template>
   <ContentLoader v-slot v-if="supported" :loading="files === null">
-    <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         Files
       </h1>
-      <div v-if="files.files">
+      <span class="align-self-start">{{ files.files?.length ? `${files.files?.length} ${files.files?.length > 1 ? 'tracks' : 'track' }` : '' }}</span>
+
+      <div v-if="files.files" class="ml-auto">
         <b-button variant="secondary" class="mr-2" @click="playNow">
           <Icon icon="play" /> Play
         </b-button>
@@ -12,7 +14,21 @@
           <Icon icon="shuffle" /> Shuffle
         </b-button>
       </div>
+
+      <OverflowMenu class="ml-3">
+        <ContextMenuItem icon="save" @click="showPlaylist = true">
+          Add to playlist
+        </ContextMenuItem>
+        <ContextMenuItem v-if="shareStore.supported" icon="share" @click="showShare = true">
+          Share
+        </ContextMenuItem>
+        <ContextMenuItem v-if="true" icon="download" @click="mainStore.downloadAll(files.name, playableTracks)">
+          Download all
+        </ContextMenuItem>
+      </OverflowMenu>
+
     </div>
+
     <div class="bc align-items-center mb-2">
       <span v-for="p, i in path" :key="i" class="bc-item">
         <b-button variant="link" class="px-1 py-0" @click="pathSlice(i)" :disabled="i === path.length-1">
@@ -54,21 +70,27 @@
         </template>
       </tbody>
     </BaseTable>
+
+    <PlaylistModal :visible.sync="showPlaylist" :tracks="playableTracks" />
+    <ShareModal :visible.sync="showShare" :tracks="playableTracks" />
   </ContentLoader>
   <EmptyIndicator v-else label="Files are not supported" />
-
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useFilesStore } from '@/library/files/store'
+  import { useMainStore } from '@/shared/store'
+  import { useShareStore } from '@/library/share/store'
   import { Track } from '@/shared/api'
   import BaseTable from '@/shared/components/BaseTable.vue'
   import BaseTableHead from '@/shared/components/BaseTableHead.vue'
   import CellTrackNumber from '@/shared/components/track/CellTrackNumber.vue'
   import CellTitle from '@/shared/components/track/CellTitle.vue'
   import CellActions from '@/shared/components/track/CellActions.vue'
+  import PlaylistModal from '@/library/playlist/PlaylistModal.vue'
+  import ShareModal from '@/library/share/ShareModal.vue'
 
   export default defineComponent({
     components: {
@@ -76,15 +98,23 @@
       BaseTableHead,
       CellTrackNumber,
       CellTitle,
-      CellActions
+      CellActions,
+      ShareModal,
+      PlaylistModal,
     },
     props: {
       pathID: { type: String, default: '' }
     },
+    data() {
+      return {
+        showShare: false,
+        showPlaylist: false,
+      }
+    },
     setup() {
       const filesStore = useFilesStore()
       const { supported, files, pathString } = storeToRefs(filesStore)
-      return { supported, filesStore, files, pathString }
+      return { supported, files, pathString, filesStore, mainStore: useMainStore(), shareStore: useShareStore() }
     },
     computed: {
       isPlaying(): boolean {

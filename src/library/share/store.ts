@@ -14,10 +14,15 @@ export const useShareStore = defineStore('share', {
         this._loading = true
         this.shares = await this.api.getShares()
       } catch (e) {
+        console.log(e)
         this.supported = false
       } finally {
         this._loading = false
       }
+    },
+    async get(id: string): Promise<undefined | Share> {
+      await this.load()
+      return this.shares ? this.shares.find(s => s.id === id) : undefined
     },
     async create({ id, description, expires, secret, download }: any): Promise<Share> {
       const share = await this.api.addShare({ id, description, expires, secret, download })
@@ -34,9 +39,9 @@ export const useShareStore = defineStore('share', {
     async addTracks(id: string, add: string[]) {
       await this.api.updateShare({ id, add })
     },
-    // async removeTrack(playlistId: string, index: number) {
-
-    // },
+    async removeTrack(id: string, remove: string | string[]) {
+      await this.api.updateShare({ id, remove })
+    },
     async delete(id: string) {
       await this.api.deleteShare(id)
       this.shares = this.shares!.filter(p => p.id !== id)

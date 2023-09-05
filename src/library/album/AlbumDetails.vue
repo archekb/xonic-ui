@@ -19,6 +19,7 @@
             {{ album.genreId }}
           </router-link>
         </span>
+        <span>{{ album.tracks?.length ? ` • ${album.tracks?.length} ${album.tracks?.length > 1 ? 'tracks' : 'track' }` : '' }}</span>
       </p>
 
       <div class="text-nowrap">

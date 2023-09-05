@@ -26,13 +26,16 @@
           :value="item.track || index + 1"
         />
         <CellTitle :track="item" />
-        <CellArtist v-if="!noArtist" :track="item" />
-        <CellAlbum v-if="!noAlbum" :track="item" />
+        <CellArtist v-if="!noArtist" :track="item" :share="share" />
+        <CellAlbum v-if="!noAlbum" :track="item"  :share="share" />
         <CellDuration v-if="!noDuration" :track="item" />
         <CellHomePageUrl v-if="homepageUrl" :track="item" />
-        <CellActions :track="item">
+        <CellActions v-if="!share" :track="item">
           <slot name="context-menu" :index="index" :item="item" />
         </CellActions>
+        <td v-else class="float-right">
+          <slot name="actions" :index="index" :item="item" />
+        </td>
       </tr>
     </tbody>
 
@@ -64,6 +67,7 @@
       CellHomePageUrl,
     },
     props: {
+      share: { type: Boolean },
       tracks: { type: Array as PropType<Track[]>, required: true },
       noAlbum: { type: Boolean, default: false },
       noArtist: { type: Boolean, default: false },

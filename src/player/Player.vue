@@ -1,16 +1,20 @@
 <template>
   <div :class="{'visible': visible}" class="player elevated d-flex">
     <div class="flex-fill">
-      <ProgressBar style="margin-bottom: -5px; margin-top: -9px" />
+      <ProgressBar style="margin-bottom: -5px; margin-top: -9px" v-if="visible" />
 
       <div class="row align-items-center m-0" style="padding-top: -10px">
         <!-- Track info --->
         <div class="col p-0 d-flex flex-nowrap align-items-center justify-content-start" style="width: 0; min-width: 0">
           <template v-if="track">
-            <router-link :to="{ name: 'playing' }" style="padding: 12px">
+            <router-link :to="{ name: 'playing' }" style="padding: 12px" v-if="!share">
               <img v-if="track.image" width="52" height="52" :src="track.image">
               <img v-else width="52" height="52" src="@/shared/assets/fallback.svg">
             </router-link>
+            <div style="padding: 12px" v-else>
+              <img v-if="track.image" width="52" height="52" :src="track.image">
+              <img v-else width="52" height="52" src="@/shared/assets/fallback.svg">
+            </div>
             <div style="min-width: 0">
               <div class="text-truncate">
                 {{ streamTitle || track.title }}
@@ -39,7 +43,7 @@
         <div class="col-auto col-sm p-0">
           <div class="d-flex flex-nowrap justify-content-end pr-3">
             <div class="m-0 d-none d-md-inline-flex align-items-center">
-              <template v-if="track.isPodcast">
+              <template v-if="track?.isPodcast">
                 <b-button id="player-playback-rate-btn" variant="icon" title="Speed" class="mb-1">
                   {{ playbackRate }}x
                 </b-button>
@@ -51,12 +55,7 @@
                   />
                 </b-popover>
               </template>
-              <b-button
-                title="Favourite"
-                variant="link" class="m-0"
-                :disabled="track && track.isStream"
-                @click="toggleFavourite"
-              >
+              <b-button title="Favourite" variant="link" class="m-0" :disabled="track && track.isStream" @click="toggleFavourite" v-if="!share">
                 <Icon :icon="isFavourite ? 'heart-fill' : 'heart'" />
               </b-button>
               <b-button id="player-volume-btn" variant="link" title="Volume">
@@ -89,7 +88,7 @@
                   />
                 </div>
               </b-dropdown-text>
-              <b-dropdown-text v-if="track.isPodcast">
+              <b-dropdown-text v-if="track?.isPodcast">
                 <div class="d-flex justify-content-between align-items-center">
                   <strong>Speed</strong>
                   <Slider class="px-3" style="width: 120px;"
@@ -125,6 +124,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
   import { defineComponent } from 'vue'
   import ProgressBar from '@/player/ProgressBar.vue'
@@ -135,6 +135,9 @@
     components: {
       BPopover,
       ProgressBar,
+    },
+    props: {
+      share: { type: Boolean },
     },
     setup() {
       return {
@@ -176,7 +179,7 @@
         return [
           this.streamTitle || this.track?.title,
           this.track?.artist || this.track?.album,
-          'Xonic UI'
+          'xonic-ui'
         ].filter(x => !!x).join(' • ')
       }
     },
@@ -216,6 +219,7 @@
     }
   })
 </script>
+
 <style scoped>
   .player {
     position: fixed;
