@@ -108,7 +108,7 @@
       }
     },
     async created() {
-      await this.storeShare.load()
+      await this.storeShare.load(true)
     },
     methods: {
       edit(item: Share) {
@@ -116,6 +116,7 @@
         this.showEditModal = true
       },
       updateShare(s: Share) {
+        console.log(s)
         this.storeShare.update({ id: s.id, description: s.description, expires: s.expires?.valueOf(), secret: s.secret, download: s.download })
       },
       async deleteShare(item: Share) {

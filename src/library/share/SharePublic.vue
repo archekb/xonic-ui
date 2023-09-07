@@ -1,5 +1,5 @@
 <template>
-  <div v-if="secretReqired">
+  <div v-if="secretReqired && share == null">
     <div class="row align-items-center h-100 mt-5">
       <div class="mx-auto card" style="width: 22rem">
         <b-overlay rounded :show="authLoad" opacity="0.1">
@@ -9,12 +9,12 @@
             </div>
             <div class="form-group">
               <label>Secret</label>
-              <input v-model="secret" type="text" class="form-control" :class="{'is-invalid': hasError}">
+              <input v-model="secret" type="text" class="form-control" :class="{'is-invalid': !!error}">
             </div>
             <div v-if="error" class="text-danger mb-3">
               {{ error }}
             </div>
-            <button class="btn btn-primary btn-block" :disabled="authLoad" @click="auth">
+            <button class="btn btn-primary btn-block" :disabled="authLoad" @click="load">
               <span v-show="false" class="spinner-border spinner-border-sm" /> Ok
             </button>
           </div>
@@ -97,13 +97,14 @@
         authLoad: false,
 
         secretReqired: false,
-        secret: '',
+        secret: window.sessionStorage.getItem(`xonic-share-${this.id}-${this.srv}`) || '',
 
         error: '',
         share: null as any,
       }
     },
     async created() {
+      this.$store.commit('player/setQueue', [])
       await this.load()
     },
     computed: {
@@ -153,12 +154,18 @@
 
           this.share = share
           if (share.tracks) {
-            this.$store.dispatch('player/addToQueue', [share.tracks])
+            this.$store.dispatch('player/addToQueue', share.tracks)
+            this.$store.dispatch('player/resetQueue')
           }
+          window.sessionStorage.setItem(`xonic-share-${this.id}-${this.getSrv}`, this.secret)
         } catch (e) {
           console.log(e)
-          if (e === 'auth reqired') {
-            this.secretReqired = true
+          if (`${e}`.includes('auth required')) {
+            if (!this.secretReqired) {
+              this.secretReqired = true
+            } else {
+              this.error = 'Wrong secret'
+            }
             return
           }
           this.error = `${e}`

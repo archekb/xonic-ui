@@ -29,8 +29,8 @@ export const useShareStore = defineStore('share', {
       this.shares = [...(this.shares ? this.shares : []), share]
       return share
     },
-    async update({ id, description, expires, protection, download, add, remove }: any) {
-      await this.api.updateShare({ id, description, expires, protection, download, add, remove })
+    async update({ id, description, expires, secret, download, add, remove }: any) {
+      await this.api.updateShare({ id, description, expires, secret, download, add, remove })
       const share = this.shares ? this.shares.find(s => s.id === id) : null
       if (share) {
         this.shares = [...(this.shares ? this.shares.filter(s => s.id !== id) : []), share]

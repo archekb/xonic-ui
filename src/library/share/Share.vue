@@ -42,9 +42,9 @@
     </div>
 
     <TrackList v-if="share.tracks.length > 0" :tracks="share.tracks">
-      <template #context-menu="{index}">
+      <template #context-menu="{item}">
         <b-dropdown-divider />
-        <ContextMenuItem icon="trash" variant="danger" @click="removeTrack(index)">
+        <ContextMenuItem icon="trash" variant="danger" @click="removeTrack(item.id)">
           Remove
         </ContextMenuItem>
       </template>

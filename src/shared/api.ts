@@ -171,7 +171,7 @@ export class API {
           if (subsonicResponse.status === 'ok') {
             return subsonicResponse
           }
-          const message = subsonicResponse.error?.message || subsonicResponse.status
+          const message = subsonicResponse.status === 50 ? 'Auth required' : subsonicResponse.error?.message || subsonicResponse.status
           throw new Error(message)
         })
     }
@@ -495,8 +495,8 @@ export class API {
     return shares[0]
   }
 
-  async updateShare({ id, description, expires, protection, download, add, remove }: any): Promise<void> {
-    return this.fetch('rest/updateShare', { id, description, expires, protection, download, add, remove })
+  async updateShare({ id, description, expires, secret, download, add, remove }: any): Promise<void> {
+    return this.fetch('rest/updateShare', { id, description, expires, secret, download, add, remove })
   }
 
   async deleteShare(id: string): Promise<any> {
@@ -512,6 +512,8 @@ export class API {
   }
 
   async updateNowPlaying(id: string): Promise<void> {
+    const { urlParams } = this.auth
+    if (urlParams.includes('shareId')) return new Promise<void>((resolve, reject) => resolve())
     return this.fetch('rest/scrobble', { id, submission: false })
   }
 
@@ -639,13 +641,14 @@ export class API {
       lastVisited: new Date(Date.parse(item.lastVisited)) || null,
       protected: item.protected,
       visitCount: item.visitCount,
+      download: item.download,
       tracks: (item.entry || []).map(this.normalizeTrack, this)
     }
   }
 
   getDownloadUrl(id: any) {
     const { server, urlParams } = this.auth
-    return `${server}/rest/download` +
+    return `${server}/rest/${urlParams.includes('shareId') ? 'downloadSharePublic' : 'download'}` +
       `?id=${id}` +
       '&v=1.15.0' +
       `&${urlParams}` +
@@ -667,7 +670,7 @@ export class API {
 
   private getStreamUrl(id: any) {
     const { server, urlParams } = this.auth
-    return `${server}/rest/stream` +
+    return `${server}/rest/${urlParams.includes('shareId') ? 'streamSharePublic' : 'stream'}` +
       `?id=${id}` +
       '&v=1.15.0' +
       `&${urlParams}` +
