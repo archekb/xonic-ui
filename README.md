@@ -17,10 +17,11 @@ Modern responsive web frontend for [airsonic-advanced](https://github.com/airson
 - Internet radio
 - Podcasts
 - Files
-- Shares
+- Shares (via [OpenSubsonic API proposal](https://github.com/opensubsonic/open-subsonic-api/discussions/47), )
 - Themes
 - Client Settings
-- Collection Downloads
+- Collection Downloads (build zip archive in your browser)
+- New version check (in about)
 
 ## [Live demo](https://xonic-ui.netlify.com) 
 
