@@ -5,7 +5,6 @@ import { Track } from '@/shared/api'
 import JSZip from 'jszip'
 import axios from 'axios'
 import { saveAs } from 'file-saver'
-import { slice } from 'lodash-es'
 
 export interface Notification {
   id?: string

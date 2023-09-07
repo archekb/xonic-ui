@@ -1,5 +1,5 @@
 <template>
-  <ContentLoader v-slot v-if="supported" :loading="files === null">
+  <ContentLoader v-if="supported" v-slot :loading="files === null">
     <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         Files
@@ -31,7 +31,7 @@
 
     <div class="bc align-items-center mb-2">
       <span v-for="p, i in path" :key="i" class="bc-item">
-        <b-button variant="link" class="px-1 py-0" @click="pathSlice(i)" :disabled="i === path.length-1">
+        <b-button variant="link" class="px-1 py-0" :disabled="i === path.length-1" @click="pathSlice(i)">
           <template v-if="!!p">{{ p }}</template>
           <template v-else><Icon icon="home" /></template>
         </b-button>
@@ -105,16 +105,16 @@
     props: {
       pathID: { type: String, default: '' }
     },
+    setup() {
+      const filesStore = useFilesStore()
+      const { supported, files, pathString } = storeToRefs(filesStore)
+      return { supported, files, pathString, filesStore, mainStore: useMainStore(), shareStore: useShareStore() }
+    },
     data() {
       return {
         showShare: false,
         showPlaylist: false,
       }
-    },
-    setup() {
-      const filesStore = useFilesStore()
-      const { supported, files, pathString } = storeToRefs(filesStore)
-      return { supported, files, pathString, filesStore, mainStore: useMainStore(), shareStore: useShareStore() }
     },
     computed: {
       isPlaying(): boolean {

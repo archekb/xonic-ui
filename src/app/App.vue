@@ -26,8 +26,10 @@
       const { settings } = storeToRefs(settingsStore)
       return { settings, settingsStore }
     },
-    async created() {
-      this.setTheme(this.settingsStore.get('ui.theme'))
+    computed: {
+      layout(): string {
+        return (this as any).$route.meta.layout || 'Default'
+      }
     },
     watch: {
       settings: {
@@ -36,11 +38,10 @@
         }
       }
     },
-    computed: {
-      layout(): string {
-        return (this as any).$route.meta.layout || 'Default'
-      }
+    async created() {
+      this.setTheme(this.settingsStore.get('ui.theme'))
     },
+
     methods: {
       setTheme: (theme: Theme) => {
         document.getElementById('client_theme')?.remove()

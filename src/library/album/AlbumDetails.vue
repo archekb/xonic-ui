@@ -103,13 +103,15 @@
     },
     methods: {
       playNow() {
+        if (!this.album?.tracks) return
         return this.$store.dispatch('player/playNow', {
-          tracks: this.album!.tracks,
+          tracks: this.album.tracks,
         })
       },
       shuffleNow() {
+        if (!this.album?.tracks) return
         return this.$store.dispatch('player/shuffleNow', {
-          tracks: this.album!.tracks,
+          tracks: this.album.tracks,
         })
       },
       setNextInQueue() {

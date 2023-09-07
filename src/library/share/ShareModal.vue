@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div v-else-if="type === 'url'" class="list-group list-group-flush" >
+    <div v-else-if="type === 'url'" class="list-group list-group-flush">
       <dl class="row">
         <dt class="col-sm-3">Description</dt>
         <dd class="col-sm-9">{{ item.description }}</dd>
@@ -57,11 +57,11 @@
       </b-button>
     </div>
 
-    <div class="list-group list-group-flush" v-else-if="type === 'select'">
+    <div v-else-if="type === 'select'" class="list-group list-group-flush">
       <b-button type="button" class="list-group-item list-group-item-action text-truncate text-center" @click="type = 'new'">
         Create new share
       </b-button>
-      <b-button v-for="s in shares" :key="s.id" type="button" class="list-group-item list-group-item-action text-truncate" @click="save(s.id)" variant="outline-secondary">
+      <b-button v-for="s in shares" :key="s.id" type="button" class="list-group-item list-group-item-action text-truncate" variant="outline-secondary" @click="save(s.id)">
         {{ s.description }}
       </b-button>
     </div>
@@ -90,12 +90,6 @@
       visible: { type: Boolean, required: true },
       tracks: { type: Array<Track>, required: true },
     },
-    data() {
-      return {
-        type: 'select',
-        item: {} as Share,
-      }
-    },
     setup() {
       const storeShare = useShareStore()
       const { shares, supported } = storeToRefs(storeShare)
@@ -103,6 +97,12 @@
         storeShare,
         shares,
         supported,
+      }
+    },
+    data() {
+      return {
+        type: 'select',
+        item: {} as Share,
       }
     },
     async created() {

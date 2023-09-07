@@ -1,15 +1,15 @@
 <template>
-  <ContentLoader v-slot v-if="supported" :loading="stations === null">
+  <ContentLoader v-if="supported" v-slot :loading="stations === null">
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         Radio
       </h1>
-        <b-button variant="link" :disabled="unsupported" @click="editRadioStation()">
-          <Icon icon="plus" />
-        </b-button>
+      <b-button variant="link" :disabled="unsupported" @click="editRadioStation()">
+        <Icon icon="plus" />
+      </b-button>
     </div>
 
-    <TrackList v-if="stations.length > 0" :tracks="stations" no-artist no-album no-duration homepageUrl>
+    <TrackList v-if="stations.length > 0" :tracks="stations" no-artist no-album no-duration homepage-url>
       <template #context-menu="{index}">
         <b-dropdown-divider />
         <ContextMenuItem icon="edit" @click="editRadioStation(index)">
@@ -29,15 +29,15 @@
       <template #default="{ item }">
         <div class="form-group">
           <label>Name *</label>
-          <input v-model="item.title" class="form-control" type="text" />
+          <b-form-input v-model="item.title" class="form-control" type="text" />
         </div>
         <div class="form-group">
           <label>Stream URL *</label>
-          <input v-model="item.url" class="form-control" type="text" />
+          <b-form-input v-model="item.url" class="form-control" type="text" />
         </div>
         <div class="form-group">
           <label class="mb-0">Home Page URL</label>
-          <input v-model="item.homepageUrl" class="form-control" type="text" />
+          <b-form-input v-model="item.homepageUrl" class="form-control" type="text" />
         </div>
       </template>
     </EditModal>
@@ -50,6 +50,8 @@
   import ContentLoader from '@/shared/components/ContentLoader.vue'
   import EditModal from '@/shared/components/EditModal.vue'
   import TrackList from '@/shared/components/track/TrackList.vue'
+  import { BFormInput } from 'bootstrap-vue'
+
   import { useRadioStore } from '@/library/radio/store'
   import { useMainStore } from '@/shared/store'
 
@@ -58,6 +60,7 @@
       TrackList,
       ContentLoader,
       EditModal,
+      BFormInput,
     },
     setup() {
       const radioStore = useRadioStore()

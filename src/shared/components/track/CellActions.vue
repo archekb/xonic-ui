@@ -1,7 +1,7 @@
 <template>
   <td class="text-right" @click.stop="">
     <OverflowMenu>
-       <template v-if="track && !track.isUnavailable">
+      <template v-if="track && !track.isUnavailable">
         <ContextMenuItem icon="plus" @click="setNextInQueue()">
           Play next
         </ContextMenuItem>

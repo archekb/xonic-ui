@@ -44,7 +44,8 @@ export const usePlaylistStore = defineStore('playlist', {
     },
     async delete(id: string) {
       await this.api.deletePlaylist(id)
-      this.playlists = this.playlists!.filter(p => p.id !== id)
+      if (!this.playlists) return
+      this.playlists = this.playlists.filter(p => p.id !== id)
     },
   },
 })

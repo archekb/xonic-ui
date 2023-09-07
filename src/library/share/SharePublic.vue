@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <ContentLoader v-slot v-else-if="!error" :loading="share == null">
+  <ContentLoader v-else-if="!error" v-slot :loading="share == null">
     <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         {{ share.description }}
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <OverflowMenu class="ml-3" v-if="share.download">
+      <OverflowMenu v-if="share.download" class="ml-3">
         <ContextMenuItem v-if="true" icon="download" @click="mainStore.downloadAll(share.name, share.tracks)">
           Download all
         </ContextMenuItem>
@@ -59,7 +59,7 @@
     </div>
 
     <TrackList v-if="share.tracks.length > 0" :tracks="share.tracks" share>
-      <template #actions="{item: track}" v-if="share.download">
+      <template v-if="share.download" #actions="{item: track}">
         <OverflowMenu>
           <ContextMenuItem v-if="!track.isStream" icon="download" @click="downloadTrack(track)">
             Download
@@ -90,7 +90,7 @@
     },
     props: {
       id: { type: String, required: true },
-      srv: { type: String },
+      srv: { type: String, default: '' },
     },
     data() {
       return {
@@ -103,10 +103,7 @@
         share: null as any,
       }
     },
-    async created() {
-      this.$store.commit('player/setQueue', [])
-      await this.load()
-    },
+
     computed: {
       isRandom(): boolean {
         return this.id === 'random'
@@ -138,6 +135,10 @@
           await this.load()
         }
       },
+    },
+    async created() {
+      this.$store.commit('player/setQueue', [])
+      await this.load()
     },
     methods: {
       async load() {

@@ -1,5 +1,5 @@
 <template>
-  <ContentLoader v-slot v-if="supported" :loading="share == null">
+  <ContentLoader v-if="supported" v-slot :loading="share == null">
     <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         {{ share.description }}
@@ -83,7 +83,7 @@
   import { defineComponent } from 'vue'
   import { storeToRefs } from 'pinia'
   import TrackList from '@/shared/components/track/TrackList.vue'
-  import EditModal from '@/shared/components/EditModal.vue'
+  // import EditModal from '@/shared/components/EditModal.vue'
   import { useShareStore } from '@/library/share/store'
   import { Track } from '@/shared/api'
   import { useMainStore } from '@/shared/store'
@@ -91,7 +91,7 @@
   export default defineComponent({
     components: {
       TrackList,
-      EditModal,
+      // EditModal,
     },
     props: {
       id: { type: String, required: true }

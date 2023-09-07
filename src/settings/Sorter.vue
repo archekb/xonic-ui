@@ -3,7 +3,7 @@
     <b-list-group-item v-for="option, idx in options" :key="idx" class="p-0">
       <div class="d-flex justify-content-between align-items-center">
         <b-form-checkbox :checked="list.includes(option)" @change="toggleOption(option)">
-          {{option.charAt(0).toUpperCase() + option.slice(1)}}
+          {{ option.charAt(0).toUpperCase() + option.slice(1) }}
         </b-form-checkbox>
       </div>
     </b-list-group-item>

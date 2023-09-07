@@ -22,10 +22,10 @@
       </div>
 
       <OverflowMenu class="ml-3">
-        <ContextMenuItem icon="save" @click="showPlaylist = true" v-if="isRandom">
+        <ContextMenuItem v-if="isRandom" icon="save" @click="showPlaylist = true">
           Add to playlist
         </ContextMenuItem>
-        <ContextMenuItem icon="edit" @click="showEditModal = true" v-if="!isRandom">
+        <ContextMenuItem v-if="!isRandom" icon="edit" @click="showEditModal = true">
           Edit
         </ContextMenuItem>
         <ContextMenuItem v-if="shareStore.supported" icon="share" @click="showShare = true">
@@ -35,7 +35,7 @@
           Download all
         </ContextMenuItem>
         <b-dropdown-divider v-if="!isRandom" />
-        <ContextMenuItem icon="trash" variant="danger" @click="deletePlaylist()" v-if="!isRandom">
+        <ContextMenuItem v-if="!isRandom" icon="trash" variant="danger" @click="deletePlaylist()">
           Delete
         </ContextMenuItem>
       </OverflowMenu>
@@ -91,7 +91,7 @@
   <EmptyIndicator v-else-if="error">
     Playlist can't be loaded, {{ error?.message?.toLowerCase() }}
     <div class="d-flex flex-column align-items-center mt-4">
-      <b-button variant="secondary" class="text-danger" @click="deletePlaylist()" v-if="!isRandom">
+      <b-button v-if="!isRandom" variant="secondary" class="text-danger" @click="deletePlaylist()">
         <Icon icon="trash" /> Try to delete playlist
       </b-button>
     </div>

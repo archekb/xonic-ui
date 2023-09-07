@@ -7,11 +7,11 @@
       </button>
     </div>
 
-    <router-link class="nav-link" :to="{name: 'discover'}" exact v-if="settings.includes('ui.menu.list', 'discover')">
+    <router-link v-if="settings.includes('ui.menu.list', 'discover')" class="nav-link" :to="{name: 'discover'}" exact>
       <Icon icon="discover" class="" /> Discover
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'playing'}" v-if="settings.includes('ui.menu.list', 'playing')">
+    <router-link v-if="settings.includes('ui.menu.list', 'playing')" class="nav-link" :to="{name: 'playing'}">
       <Icon icon="playlist" /> Playing
     </router-link>
 
@@ -19,43 +19,43 @@
       Library
     </small>
 
-    <router-link class="nav-link" :to="{name: 'albums-default'}" v-if="settings.includes('ui.menu.list', 'albums')">
+    <router-link v-if="settings.includes('ui.menu.list', 'albums')" class="nav-link" :to="{name: 'albums-default'}">
       <Icon icon="library" /> Albums
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'artists'}" v-if="settings.includes('ui.menu.list', 'artists')">
+    <router-link v-if="settings.includes('ui.menu.list', 'artists')" class="nav-link" :to="{name: 'artists'}">
       <Icon icon="library" /> Artists
     </router-link>
 
-    <router-link class="nav-item nav-link" :to="{name: 'genres'}" v-if="settings.includes('ui.menu.list', 'genres')">
+    <router-link v-if="settings.includes('ui.menu.list', 'genres')" class="nav-item nav-link" :to="{name: 'genres'}">
       <Icon icon="library" /> Genres
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'playlists'}" v-if="settings.includes('ui.menu.list', 'playlists')">
+    <router-link v-if="settings.includes('ui.menu.list', 'playlists')" class="nav-link" :to="{name: 'playlists'}">
       <Icon icon="list" /> Playlists
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'favourites'}" v-if="settings.includes('ui.menu.list', 'favourites')">
+    <router-link v-if="settings.includes('ui.menu.list', 'favourites')" class="nav-link" :to="{name: 'favourites'}">
       <Icon icon="heart" /> Favourites
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'shares'}" v-if="settings.includes('ui.menu.list', 'shares')">
+    <router-link v-if="settings.includes('ui.menu.list', 'shares')" class="nav-link" :to="{name: 'shares'}">
       <Icon icon="share" /> Shares
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'podcasts'}" v-if="settings.includes('ui.menu.list', 'podcasts')">
+    <router-link v-if="settings.includes('ui.menu.list', 'podcasts')" class="nav-link" :to="{name: 'podcasts'}">
       <Icon icon="podcast" /> Podcasts
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'radio'}" v-if="settings.includes('ui.menu.list', 'radio')">
+    <router-link v-if="settings.includes('ui.menu.list', 'radio')" class="nav-link" :to="{name: 'radio'}">
       <Icon icon="radio" /> Radio
     </router-link>
 
-    <router-link class="nav-link" :to="{name: 'files'}" v-if="settings.includes('ui.menu.list', 'files')">
+    <router-link v-if="settings.includes('ui.menu.list', 'files')" class="nav-link" :to="{name: 'files'}">
       <Icon icon="files" /> Files
     </router-link>
 
-    <PlaylistNav v-if="settings.get('ui.menu.playlists')"/>
+    <PlaylistNav v-if="settings.get('ui.menu.playlists')" />
   </nav>
 </template>
 <script lang="ts">

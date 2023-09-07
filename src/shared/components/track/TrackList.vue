@@ -27,7 +27,7 @@
         />
         <CellTitle :track="item" />
         <CellArtist v-if="!noArtist" :track="item" :share="share" />
-        <CellAlbum v-if="!noAlbum" :track="item"  :share="share" />
+        <CellAlbum v-if="!noAlbum" :track="item" :share="share" />
         <CellDuration v-if="!noDuration" :track="item" />
         <CellHomePageUrl v-if="homepageUrl" :track="item" />
         <CellActions v-if="!share" :track="item">

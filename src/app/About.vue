@@ -8,7 +8,7 @@
       <dl class="row">
         <dt class="col-sm-3">GitHub</dt>
         <dd class="col-sm-9">
-          <ExternalLink href='https://github.com/archekb/xonic-ui'>
+          <ExternalLink href="https://github.com/archekb/xonic-ui">
             https://github.com/archekb/xonic-ui
           </ExternalLink>
         </dd>
@@ -22,7 +22,7 @@
 
       <div>
         fork of
-        <ExternalLink href='https://github.com/tamland/airsonic-refix'>
+        <ExternalLink href="https://github.com/tamland/airsonic-refix">
           Airsonic-refix
         </ExternalLink>
       </div>
@@ -53,12 +53,12 @@
         newVersion: null,
       }
     },
-    created() {
-      axios.get('https://raw.githubusercontent.com/archekb/xonic-ui/main/package.json').then(responce => { this.newVersion = responce.data?.version })
-    },
     computed: {
       build: () => process.env.VUE_APP_BUILD,
       buildDate: () => process.env.VUE_APP_BUILD_DATE,
+    },
+    created() {
+      axios.get('https://raw.githubusercontent.com/archekb/xonic-ui/main/package.json').then(responce => { this.newVersion = responce.data?.version })
     },
   })
 </script>

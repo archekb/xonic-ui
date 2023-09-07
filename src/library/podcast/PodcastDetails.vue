@@ -1,5 +1,5 @@
 <template>
-  <ContentLoader v-slot v-if="supported" :loading="podcast == null">
+  <ContentLoader v-if="supported" v-slot :loading="podcast == null">
     <Hero :image="podcast.image">
       <h1>
         {{ podcast.name }}

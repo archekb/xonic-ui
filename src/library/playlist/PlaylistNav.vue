@@ -60,8 +60,9 @@
         const albumId = event.dataTransfer.getData('application/x-album-id')
         if (albumId) {
           const album = await this.$api.getAlbumDetails(albumId)
+          if (!album?.tracks) return
           return this.addTracks(
-            playlistId, album.tracks!.map(item => item.id)
+            playlistId, album.tracks.map(item => item.id)
           )
         }
       },

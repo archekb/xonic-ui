@@ -513,7 +513,7 @@ export class API {
 
   async updateNowPlaying(id: string): Promise<void> {
     const { urlParams } = this.auth
-    if (urlParams.includes('shareId')) return new Promise<void>((resolve, reject) => resolve())
+    if (urlParams.includes('shareId')) return new Promise<void>((resolve) => resolve())
     return this.fetch('rest/scrobble', { id, submission: false })
   }
 

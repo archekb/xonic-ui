@@ -1,17 +1,17 @@
 <template>
   <div :class="{'visible': visible}" class="player elevated d-flex">
     <div class="flex-fill">
-      <ProgressBar style="margin-bottom: -5px; margin-top: -9px" v-if="visible" />
+      <ProgressBar v-if="visible" style="margin-bottom: -5px; margin-top: -9px" />
 
       <div class="row align-items-center m-0" style="padding-top: -10px">
         <!-- Track info --->
         <div class="col p-0 d-flex flex-nowrap align-items-center justify-content-start" style="width: 0; min-width: 0">
           <template v-if="track">
-            <router-link :to="{ name: 'playing' }" style="padding: 12px" v-if="!share">
+            <router-link v-if="!share" :to="{ name: 'playing' }" style="padding: 12px">
               <img v-if="track.image" width="52" height="52" :src="track.image">
               <img v-else width="52" height="52" src="@/shared/assets/fallback.svg">
             </router-link>
-            <div style="padding: 12px" v-else>
+            <div v-else style="padding: 12px">
               <img v-if="track.image" width="52" height="52" :src="track.image">
               <img v-else width="52" height="52" src="@/shared/assets/fallback.svg">
             </div>
@@ -55,7 +55,7 @@
                   />
                 </b-popover>
               </template>
-              <b-button title="Favourite" variant="link" class="m-0" :disabled="track && track.isStream" @click="toggleFavourite" v-if="!share">
+              <b-button v-if="!share" title="Favourite" variant="link" class="m-0" :disabled="track && track.isStream" @click="toggleFavourite">
                 <Icon :icon="isFavourite ? 'heart-fill' : 'heart'" />
               </b-button>
               <b-button id="player-volume-btn" variant="link" title="Volume">

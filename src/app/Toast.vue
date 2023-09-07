@@ -3,7 +3,7 @@
     <b-toast v-for="n in notifications" :key="n.id" visible :title="n?.title" :variant="n?.type || 'secondary'" :no-auto-hide="n.notAutoHide" @hidden="removeNotification(n.id)">
       {{ n.message }}
       <div v-if="n.action">
-        <b-button variant="link" @click="n.action.click" class="px-0">{{ n.action.title }}</b-button>
+        <b-button variant="link" class="px-0" @click="n.action.click">{{ n.action.title }}</b-button>
       </div>
     </b-toast>
   </div>

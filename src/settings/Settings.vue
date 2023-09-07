@@ -27,20 +27,20 @@
             </b-form-checkbox>
 
             <h5 class="mt-3">Root component (/)</h5>
-            <b-form-select variant="secondary" :value="settings.get('ui.root')" :options="settings.get('ui.menu.list')" @change="v => settings.set('ui.root', v)"/>
+            <b-form-select variant="secondary" :value="settings.get('ui.root')" :options="settings.get('ui.menu.list')" @change="v => settings.set('ui.root', v)" />
           </b-col>
           <b-col class="col-12 col-sm-6 col-xl-3 mb-3 mb-sm-0">
             <h5>Theme presets</h5>
-            <b-form-select variant="secondary" :value="Object.keys(enums.themes).find(k => isEqual(enums.themes[k], settings.get('ui.theme')))" :options="Object.keys(enums.themes)" @change="v => settings.set('ui.theme', enums.themes[v])"/>
+            <b-form-select variant="secondary" :value="Object.keys(enums.themes).find(k => isEqual(enums.themes[k], settings.get('ui.theme')))" :options="Object.keys(enums.themes)" @change="v => settings.set('ui.theme', enums.themes[v])" />
 
             <h5 class="mt-3">Customize theme</h5>
             <div v-for="v, k in { ...enums.theme_default, ...settings.get('ui.theme')}" :key="k" class="d-flex align-items-center justify-content-between mb-2">
-              <label class="mr-2 mb-0">{{k.charAt(0).toUpperCase() + k.slice(1).replace('_', ' ')}}</label>
+              <label class="mr-2 mb-0">{{ k.charAt(0).toUpperCase() + k.slice(1).replace('_', ' ') }}</label>
               <b-dropdown variant="link" toggle-class="text-decoration-none" no-caret>
                 <template #button-content>
                   <b-button :style="{backgroundColor: `${v}!important`, padding: '0px 10px'}">&nbsp;</b-button>
                 </template>
-                <chrome-picker :value="v" @input="v => settings.set(`ui.theme.${k}`, v?.hex8)"></chrome-picker>
+                <chrome-picker :value="v" @input="v => settings.set(`ui.theme.${k}`, v?.hex8)" />
               </b-dropdown>
             </div>
           </b-col>
@@ -57,7 +57,7 @@
         <b-row>
           <b-col class="col-12 col-sm-6 col-xl-3 mb-3 mb-sm-0">
             <h5>Random playlist length</h5>
-             <b-form-input type="number" number :min="1" :max="1000" :value="settings.get('player.random_playlist_length')" @change="v => settings.set('player.random_playlist_length', v > 1000 ? 1000 : v)" />
+            <b-form-input type="number" number :min="1" :max="1000" :value="settings.get('player.random_playlist_length')" @change="v => settings.set('player.random_playlist_length', v > 1000 ? 1000 : v)" />
           </b-col>
 
         </b-row>

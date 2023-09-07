@@ -45,7 +45,7 @@ export function trackListEquals(a: Track[], b: Track[]): boolean {
 
 export function toQueryString(params: Record<string, string | string[]>): string {
   const list = Object.entries(params)
-    .filter(([k, v]) => v !== undefined)
+    .filter(([, v]) => v !== undefined)
     .map(([key, value]) => Array.isArray(value) ? value.map((x) => [key, x]) : [[key, value]])
     .flat()
   return new URLSearchParams(list).toString()

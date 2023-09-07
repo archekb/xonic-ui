@@ -44,7 +44,9 @@ export const useShareStore = defineStore('share', {
     },
     async delete(id: string) {
       await this.api.deleteShare(id)
-      this.shares = this.shares!.filter(p => p.id !== id)
+      if (this.shares) {
+        this.shares = this.shares.filter(p => p.id !== id)
+      }
     },
   },
 })

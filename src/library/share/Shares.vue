@@ -1,5 +1,5 @@
 <template>
-  <ContentLoader v-slot v-if="supported" :loading="shares === null">
+  <ContentLoader v-if="supported" v-slot :loading="shares === null">
     <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         Shares
@@ -12,32 +12,32 @@
         <td>Expires</td>
         <td>Last visit</td>
         <td>Visits</td>
-        <td><Icon icon="shield-check"/></td>
+        <td><Icon icon="shield-check" /></td>
       </BaseTableHead>
       <tbody>
-        <tr v-for="(item, index) in shares" :key="item.id" @click="$router.push({name: 'share', params: { id: item.id } })">
+        <tr v-for="(share, index) in shares" :key="share.id" @click="$router.push({name: 'share', params: { id: share.id } })">
           <td>{{ index + 1 }}</td>
           <td>
-            {{ item.description }}
+            {{ share.description }}
           </td>
-          <td>{{ item.tracks?.length }}</td>
-          <td>{{ item.created ? item.created.toLocaleString() : '-' }}</td>
-          <td>{{ item.expires ? item.expires.getFullYear() > 1 ? item.expires.toLocaleString() : '-' : '-' }}</td>
-          <td>{{ item.lastVisited ? item.lastVisited.getFullYear() > 1 ? item.lastVisited.toLocaleString() : '-' : '-' }}</td>
-          <td>{{ item.visitCount }}</td>
-          <td><Icon icon="shield-check" v-if="item?.protected" /></td>
+          <td>{{ share.tracks?.length }}</td>
+          <td>{{ share.created ? share.created.toLocaleString() : '-' }}</td>
+          <td>{{ share.expires ? share.expires.getFullYear() > 1 ? share.expires.toLocaleString() : '-' : '-' }}</td>
+          <td>{{ share.lastVisited ? share.lastVisited.getFullYear() > 1 ? share.lastVisited.toLocaleString() : '-' : '-' }}</td>
+          <td>{{ share.visitCount }}</td>
+          <td><Icon v-if="share?.protected" icon="shield-check" /></td>
           <CellMenu>
-            <ContextMenuItem icon="share" @click="copyToClipboard(item.url)">
+            <ContextMenuItem icon="share" @click="copyToClipboard(share.url)">
               Copy link
             </ContextMenuItem>
-            <ContextMenuItem icon="new-window" @click="open(item.url)">
+            <ContextMenuItem icon="new-window" @click="open(share.url)">
               Open
             </ContextMenuItem>
-            <ContextMenuItem icon="edit" @click="edit(item)">
+            <ContextMenuItem icon="edit" @click="edit(share)">
               Edit
             </ContextMenuItem>
             <b-dropdown-divider />
-            <ContextMenuItem icon="trash" variant="danger" @click="deleteShare(item)">
+            <ContextMenuItem icon="trash" variant="danger" @click="deleteShare(share)">
               Delete
             </ContextMenuItem>
           </CellMenu>
@@ -46,7 +46,7 @@
     </BaseTable>
     <EmptyIndicator v-else />
 
-    <EditModal :visible.sync="showEditModal" :item="item" @confirm="updateShare">
+    <EditModal :visible.sync="showEditModal" :item="editItem" @confirm="updateShare">
       <template #title>
         Edit Share
       </template>
@@ -104,7 +104,7 @@
     data() {
       return {
         showEditModal: false,
-        item: null as null | Share
+        editItem: null as null | Share
       }
     },
     async created() {
@@ -112,7 +112,7 @@
     },
     methods: {
       edit(item: Share) {
-        this.item = item
+        this.editItem = item
         this.showEditModal = true
       },
       updateShare(s: Share) {

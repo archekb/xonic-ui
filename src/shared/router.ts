@@ -34,7 +34,7 @@ export function setupRouter(auth: AuthService) {
       {
         path: '/',
         name: 'home',
-        redirect: to => {
+        redirect: () => {
           return { path: useSettingsStore().get('ui.root') || '/discover' }
         }
       },

@@ -15,19 +15,19 @@ export const useRadioStore = defineStore('radio', {
       }
     },
     async create(name: string, url: string, homepageUrl: string) {
-      return this.api.addRadioStation(name, url, homepageUrl).then(result => {
+      return this.api.addRadioStation(name, url, homepageUrl).then(() => {
         this.load()
       })
     },
     async update(item: RadioStation) {
-      return this.api.updateRadioStation(item).then(result => {
-        this.stations = this.stations!.map(rs => (rs.id !== item.id) ? rs : item)
-      })
+      await this.api.updateRadioStation(item)
+      if (!this.stations) return
+      this.stations = [...this.stations.map(rs => (rs.id !== item.id) ? rs : item)]
     },
     async delete(id: string) {
-      return this.api.deleteRadioStation(id).then(result => {
-        this.stations = this.stations!.filter(rs => rs.id !== id)
-      })
+      await this.api.deleteRadioStation(id)
+      if (!this.stations) return
+      this.stations = [...this.stations.filter(rs => rs.id !== id)]
     },
   },
 })

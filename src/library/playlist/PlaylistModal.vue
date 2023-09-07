@@ -17,11 +17,11 @@
       </div>
     </div>
 
-    <div class="list-group list-group-flush" v-else-if="type === 'select'">
+    <div v-else-if="type === 'select'" class="list-group list-group-flush">
       <b-button type="button" class="list-group-item list-group-item-action text-truncate text-center" @click="type = 'new'">
         Create new playlist
       </b-button>
-      <b-button v-for="p in playlists" :key="p.id" type="button" class="list-group-item list-group-item-action text-truncate" @click="save(p.id)" variant="outline-secondary">
+      <b-button v-for="p in playlists" :key="p.id" type="button" class="list-group-item list-group-item-action text-truncate" variant="outline-secondary" @click="save(p.id)">
         {{ p.name }}
       </b-button>
     </div>
@@ -40,22 +40,12 @@
   import { usePlaylistStore } from '@/library/playlist/store'
   import { useMainStore } from '@/shared/store'
   import { Playlist, Track } from '@/shared/api'
-  import { BFormDatepicker } from 'bootstrap-vue'
 
   export default defineComponent({
-    components: {
-      BFormDatepicker
-    },
     props: {
       visible: { type: Boolean, required: true },
-      tracks: { type: Array<Track> },
+      tracks: { type: Array<Track>, default: [] },
       new: { type: Boolean }
-    },
-    data() {
-      return {
-        type: this.new ? 'new' : 'select',
-        item: {} as Playlist,
-      }
     },
     setup() {
       const playlistStore = usePlaylistStore()
@@ -64,6 +54,12 @@
         mainStore: useMainStore(),
         playlistStore,
         playlists,
+      }
+    },
+    data() {
+      return {
+        type: this.new ? 'new' : 'select',
+        item: {} as Playlist,
       }
     },
     async created() {
