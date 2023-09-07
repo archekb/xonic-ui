@@ -7,12 +7,12 @@
     </div>
     <BaseTable v-if="shares?.length > 0">
       <BaseTableHead>
-        <td class="d-none d-sm-block">Tracks</td>
-        <td class="d-none d-sm-block">Created</td>
-        <td class="d-none d-sm-block">Expires</td>
-        <td class="d-none d-sm-block">Last visit</td>
-        <td class="d-none d-sm-block">Visits</td>
-        <td class="d-none d-sm-block"><Icon icon="shield-check" /></td>
+        <th class="d-none d-sm-table-cell">Tracks</th>
+        <th class="d-none d-sm-table-cell">Created</th>
+        <th class="d-none d-sm-table-cell">Expires</th>
+        <th class="d-none d-sm-table-cell">Last visit</th>
+        <th class="d-none d-sm-table-cell">Visits</th>
+        <th class="d-none d-sm-table-cell"><Icon icon="shield-check" /></th>
       </BaseTableHead>
       <tbody>
         <tr v-for="(share, index) in shares" :key="share.id" @click="$router.push({name: 'share', params: { id: share.id } })">
@@ -20,12 +20,12 @@
           <td>
             {{ share.description }}
           </td>
-          <td class="d-none d-sm-block">{{ share.tracks?.length }}</td>
-          <td class="d-none d-sm-block">{{ share.created ? share.created.toLocaleString() : '-' }}</td>
-          <td class="d-none d-sm-block">{{ share.expires ? share.expires.getFullYear() > 1 ? share.expires.toLocaleString() : '-' : '-' }}</td>
-          <td class="d-none d-sm-block">{{ share.lastVisited ? share.lastVisited.getFullYear() > 1 ? share.lastVisited.toLocaleString() : '-' : '-' }}</td>
-          <td class="d-none d-sm-block">{{ share.visitCount }}</td>
-          <td class="d-none d-sm-block"><Icon v-if="share?.protected" icon="shield-check" /></td>
+          <td class="d-none d-sm-table-cell">{{ share.tracks?.length }}</td>
+          <td class="d-none d-sm-table-cell">{{ share.created ? share.created.toLocaleString() : '-' }}</td>
+          <td class="d-none d-sm-table-cell">{{ share.expires ? share.expires.getFullYear() > 1 ? share.expires.toLocaleString() : '-' : '-' }}</td>
+          <td class="d-none d-sm-table-cell">{{ share.lastVisited ? share.lastVisited.getFullYear() > 1 ? share.lastVisited.toLocaleString() : '-' : '-' }}</td>
+          <td class="d-none d-sm-table-cell">{{ share.visitCount }}</td>
+          <td class="d-none d-sm-table-cell"><Icon v-if="share?.protected" icon="shield-check" /></td>
           <CellMenu>
             <ContextMenuItem icon="share" @click="copyToClipboard(share.url)">
               Copy link
