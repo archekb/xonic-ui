@@ -144,6 +144,10 @@ $enable-responsive-font-sizes: true;
   background-color: var(--background-2);
 }
 
+.b-calendar-grid-body .text-dark {
+  color: var(--text-muted)!important;
+}
+
 /* Remove badge fade in */
 .badge {
   transition: none !important;

@@ -1,5 +1,5 @@
 <template>
-  <ContentLoader v-if="supported" v-slot :loading="share == null">
+  <ContentLoader v-if="supported" v-slot :loading="share == undefined">
     <div class="d-flex align-items-center mb-2">
       <h1 class="mb-0 mr-2 text-truncate">
         {{ share.description }}
@@ -19,10 +19,10 @@
       </div>
 
       <OverflowMenu class="ml-3">
-        <!-- <ContextMenuItem icon="edit" @click="showEditModal = true">
+        <ContextMenuItem icon="edit" @click="showEditModal = true">
           Edit
-        </ContextMenuItem> -->
-        <ContextMenuItem v-if="true" icon="download" @click="mainStore.downloadAll(share.name, share.tracks)">
+        </ContextMenuItem>
+        <ContextMenuItem v-if="true" icon="download" @click="mainStore.downloadAll(share.description, share.tracks)">
           Download all
         </ContextMenuItem>
         <b-dropdown-divider />
@@ -52,7 +52,7 @@
 
     <EmptyIndicator v-else />
 
-    <!-- <EditModal :visible.sync="showEditModal" :item="share" @confirm="updateShare">
+    <EditModal :visible.sync="showEditModal" :item="share" @confirm="updateShare">
       <template #title>
         Edit Share
       </template>
@@ -74,7 +74,7 @@
           <b-form-checkbox v-model="item.download" switch />
         </div>
       </template>
-    </EditModal> -->
+    </EditModal>
   </ContentLoader>
   <EmptyIndicator v-else label="Shares are not supported" />
 </template>
@@ -83,15 +83,17 @@
   import { defineComponent } from 'vue'
   import { storeToRefs } from 'pinia'
   import TrackList from '@/shared/components/track/TrackList.vue'
-  // import EditModal from '@/shared/components/EditModal.vue'
+  import EditModal from '@/shared/components/EditModal.vue'
   import { useShareStore } from '@/library/share/store'
-  import { Track } from '@/shared/api'
+  import { Share, Track } from '@/shared/api'
   import { useMainStore } from '@/shared/store'
+  import { BFormDatepicker } from 'bootstrap-vue'
 
   export default defineComponent({
     components: {
       TrackList,
-      // EditModal,
+      EditModal,
+      BFormDatepicker,
     },
     props: {
       id: { type: String, required: true }
@@ -107,7 +109,7 @@
     },
     data() {
       return {
-        share: null as any,
+        share: undefined as undefined | Share,
         showEditModal: false,
       }
     },
@@ -143,6 +145,10 @@
       },
       async removeTrack(id: string) {
         await this.shareStore.removeTrack(this.id, id)
+      },
+      async updateShare(s: Share) {
+        await this.shareStore.update({ id: s.id, description: s.description, expires: s.expires?.valueOf(), secret: s.secret, download: s.download })
+        this.share = await this.shareStore.get(s.id)
       },
       deleteShare() {
         return this.shareStore.delete(this.id).then(() => {

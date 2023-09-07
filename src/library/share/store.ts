@@ -14,7 +14,6 @@ export const useShareStore = defineStore('share', {
         this._loading = true
         this.shares = await this.api.getShares()
       } catch (e) {
-        console.log(e)
         this.supported = false
       } finally {
         this._loading = false
@@ -31,7 +30,7 @@ export const useShareStore = defineStore('share', {
     },
     async update({ id, description, expires, secret, download, add, remove }: any) {
       await this.api.updateShare({ id, description, expires, secret, download, add, remove })
-      const share = this.shares ? this.shares.find(s => s.id === id) : null
+      const share = await this.api.getShare(id)
       if (share) {
         this.shares = [...(this.shares ? this.shares.filter(s => s.id !== id) : []), share]
       }

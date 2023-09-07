@@ -44,7 +44,7 @@
   export default defineComponent({
     props: {
       visible: { type: Boolean, required: true },
-      tracks: { type: Array<Track>, default: [] },
+      tracks: { type: Array<Track>, default: () => [] },
       new: { type: Boolean }
     },
     setup() {

@@ -6,16 +6,24 @@
       </h1>
       <span class="align-self-start">{{ files.files?.length ? `${files.files?.length} ${files.files?.length > 1 ? 'tracks' : 'track' }` : '' }}</span>
 
-      <div v-if="files.files" class="ml-auto">
-        <b-button variant="secondary" class="mr-2" @click="playNow">
-          <Icon icon="play" /> Play
-        </b-button>
-        <b-button variant="secondary" class="mr-2" @click="shuffleNow">
-          <Icon icon="shuffle" /> Shuffle
-        </b-button>
+      <div class="ml-auto">
+        <div v-if="files.files" class="d-none d-sm-block">
+          <b-button variant="secondary" class="mr-2" :disabled="!files.files?.length" @click="playNow">
+            <Icon icon="play" /> Play
+          </b-button>
+          <b-button variant="secondary" class="mr-2" :disabled="!files.files?.length" @click="shuffleNow">
+            <Icon icon="shuffle" /> Shuffle
+          </b-button>
+        </div>
       </div>
 
-      <OverflowMenu class="ml-3">
+      <OverflowMenu v-if="files.files?.length" class="ml-3">
+        <ContextMenuItem icon="play" @click="playNow">
+          Play
+        </ContextMenuItem>
+        <ContextMenuItem icon="shuffle" @click="shuffleNow">
+          Shuffle
+        </ContextMenuItem>
         <ContextMenuItem icon="save" @click="showPlaylist = true">
           Add to playlist
         </ContextMenuItem>
@@ -26,7 +34,6 @@
           Download all
         </ContextMenuItem>
       </OverflowMenu>
-
     </div>
 
     <div class="bc align-items-center mb-2">

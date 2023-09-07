@@ -7,12 +7,12 @@
     </div>
     <BaseTable v-if="shares?.length > 0">
       <BaseTableHead>
-        <td>Tracks</td>
-        <td>Created</td>
-        <td>Expires</td>
-        <td>Last visit</td>
-        <td>Visits</td>
-        <td><Icon icon="shield-check" /></td>
+        <td class="d-none d-sm-block">Tracks</td>
+        <td class="d-none d-sm-block">Created</td>
+        <td class="d-none d-sm-block">Expires</td>
+        <td class="d-none d-sm-block">Last visit</td>
+        <td class="d-none d-sm-block">Visits</td>
+        <td class="d-none d-sm-block"><Icon icon="shield-check" /></td>
       </BaseTableHead>
       <tbody>
         <tr v-for="(share, index) in shares" :key="share.id" @click="$router.push({name: 'share', params: { id: share.id } })">
@@ -20,12 +20,12 @@
           <td>
             {{ share.description }}
           </td>
-          <td>{{ share.tracks?.length }}</td>
-          <td>{{ share.created ? share.created.toLocaleString() : '-' }}</td>
-          <td>{{ share.expires ? share.expires.getFullYear() > 1 ? share.expires.toLocaleString() : '-' : '-' }}</td>
-          <td>{{ share.lastVisited ? share.lastVisited.getFullYear() > 1 ? share.lastVisited.toLocaleString() : '-' : '-' }}</td>
-          <td>{{ share.visitCount }}</td>
-          <td><Icon v-if="share?.protected" icon="shield-check" /></td>
+          <td class="d-none d-sm-block">{{ share.tracks?.length }}</td>
+          <td class="d-none d-sm-block">{{ share.created ? share.created.toLocaleString() : '-' }}</td>
+          <td class="d-none d-sm-block">{{ share.expires ? share.expires.getFullYear() > 1 ? share.expires.toLocaleString() : '-' : '-' }}</td>
+          <td class="d-none d-sm-block">{{ share.lastVisited ? share.lastVisited.getFullYear() > 1 ? share.lastVisited.toLocaleString() : '-' : '-' }}</td>
+          <td class="d-none d-sm-block">{{ share.visitCount }}</td>
+          <td class="d-none d-sm-block"><Icon v-if="share?.protected" icon="shield-check" /></td>
           <CellMenu>
             <ContextMenuItem icon="share" @click="copyToClipboard(share.url)">
               Copy link
@@ -91,11 +91,8 @@
       BaseTableHead,
       CellMenu,
       EditModal,
-      BFormDatepicker
+      BFormDatepicker,
     },
-    // props: {
-    //   id: { type: String, required: true }
-    // },
     setup() {
       const storeShare = useShareStore()
       const { supported, shares } = storeToRefs(storeShare)
@@ -116,7 +113,6 @@
         this.showEditModal = true
       },
       updateShare(s: Share) {
-        console.log(s)
         this.storeShare.update({ id: s.id, description: s.description, expires: s.expires?.valueOf(), secret: s.secret, download: s.download })
       },
       async deleteShare(item: Share) {
