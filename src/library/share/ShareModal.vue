@@ -91,10 +91,10 @@
       tracks: { type: Array<Track>, required: true },
     },
     setup() {
-      const storeShare = useShareStore()
-      const { shares, supported } = storeToRefs(storeShare)
+      const shareStore = useShareStore()
+      const { shares, supported } = storeToRefs(shareStore)
       return {
-        storeShare,
+        shareStore,
         shares,
         supported,
       }
@@ -106,7 +106,7 @@
       }
     },
     async created() {
-      await this.storeShare.load()
+      await this.shareStore.load()
     },
     methods: {
       cancel() {
@@ -116,10 +116,11 @@
       },
       async save(shareId = '') {
         if (shareId) {
-          await this.storeShare.addTracks(shareId, this.tracks.map(t => t.id))
+          await this.shareStore.addTracks(shareId, this.tracks.map(t => t.id))
           this.type = 'url'
+          this.item = await this.shareStore.get(shareId) || {} as Share
         } else {
-          this.item = await this.storeShare.create({ ...this.item, expires: this.item.expires?.valueOf(), id: this.tracks.map(t => t.id) })
+          this.item = await this.shareStore.create({ ...this.item, expires: this.item.expires?.valueOf(), id: this.tracks.map(t => t.id) })
           this.type = 'url'
         }
       },

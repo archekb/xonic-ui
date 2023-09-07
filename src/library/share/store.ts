@@ -36,10 +36,10 @@ export const useShareStore = defineStore('share', {
       }
     },
     async addTracks(id: string, add: string[]) {
-      await this.api.updateShare({ id, add })
+      await this.update({ id, add })
     },
     async removeTrack(id: string, remove: string | string[]) {
-      await this.api.updateShare({ id, remove })
+      await this.update({ id, remove })
     },
     async delete(id: string) {
       await this.api.deleteShare(id)

@@ -19,6 +19,12 @@
       </div>
 
       <OverflowMenu class="ml-3">
+        <ContextMenuItem icon="share" @click="copyToClipboard(share.url)">
+          Copy link
+        </ContextMenuItem>
+        <ContextMenuItem icon="new-window" @click="open(share.url)">
+          Open
+        </ContextMenuItem>
         <ContextMenuItem icon="edit" @click="showEditModal = true">
           Edit
         </ContextMenuItem>
@@ -145,6 +151,7 @@
       },
       async removeTrack(id: string) {
         await this.shareStore.removeTrack(this.id, id)
+        this.share = await this.shareStore.get(this.id)
       },
       async updateShare(s: Share) {
         await this.shareStore.update({ id: s.id, description: s.description, expires: s.expires?.valueOf(), secret: s.secret, download: s.download })
@@ -155,6 +162,17 @@
           this.$router.replace({ name: 'shares' })
         })
       },
+      async copyToClipboard(url: string) {
+        try {
+          await navigator.clipboard.writeText(url)
+          useMainStore().addNotification({ message: 'Successfully link copied to clipboard', title: 'Share' })
+        } catch (e) {
+          useMainStore().addNotification({ message: 'Failed link copy to clipboard', title: 'Share', type: 'danger' })
+        }
+      },
+      async open(url: string) {
+        window?.open(url, '_blank')?.focus()
+      }
     }
   })
 </script>
